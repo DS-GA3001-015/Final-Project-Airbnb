@@ -1,0 +1,186 @@
+---
+title: "Project Part 1"
+author: "Data Viz Team"
+date: "21 April 2018"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+```{r fig.width=10,fig.height=10}
+library(knitr)
+opts_chunk$set(fig.path="images/",
+               cache.path="cache/",
+               cache=FALSE,
+               echo=TRUE,
+               message=FALSE,
+               warning=FALSE) 
+```
+
+```{r fig.width=10,fig.height=10}
+library(dplyr)
+library(leaflet)
+library(ggthemes)
+library(ggplot2)
+library(plotly)
+library(leaflet)
+library(readr)
+library(RColorBrewer)
+library(geosphere)
+library(geojsonio)
+library(sp)
+
+#Automate for entire dataset
+
+data_replace_mean<- function(data){
+  for(i in 1:ncol(data)){
+  data[is.na(data[,i]), i] <- mean(data[,i], na.rm = TRUE)
+  }
+  return(data)
+}
+
+listings_col_to_keep = c("id","name","host_id","host_name","host_location","neighbourhood_cleansed","neighbourhood_group_cleansed","city","state","smart_location","latitude","longitude","property_type","room_type","accommodates","bathrooms","bedrooms","beds","price","weekly_price","monthly_price","security_deposit","cleaning_fee","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value","reviews_per_month","host_listings_count","host_total_listings_count","calculated_host_listings_count","availability_365","number_of_reviews")  
+
+df_subset_columns <- function(df){
+  df_subset = subset(df,select=listings_col_to_keep)
+  df_subset = data_replace_mean(df_subset)
+  return(df_subset)
+}
+
+clean_data <- function(df){
+
+  df_subset = subset(df,select=listings_col_to_keep)
+  df_subset = data_replace_mean(df_subset)
+  df_subset$is_commercial = NA
+
+
+for(i in 1:nrow(df_subset)){
+  if((df_subset[i,"calculated_host_listings_count"] > 1)  &  (df_subset[i,"availability_365"]/365 < 0.3) & (df_subset[i,"review_scores_rating"]>50)){
+    df_subset[i,"is_commercial"] = 1  
+  }
+  else{
+    df_subset[i,"is_commercial"] = 0
+  }
+}
+
+df_commercial = subset(df_subset,select = c("id","is_commercial"))
+return (df_commercial)
+}
+
+listings_file_1 <- read.csv("data/jan_listings.csv")
+listings_file_2 <- read.csv("data/feb_listings.csv")
+
+listing_1_commercial <- clean_data(listings_file_1)
+listing_2_commercial <- clean_data(listings_file_2)
+
+combined_commercial <- rbind(listing_1_commercial,listing_2_commercial)
+
+all_commercial <- filter(combined_commercial, is_commercial==1)
+unique_all_commercial <- unique(all_commercial$id)
+
+all_non_commercial <- filter(combined_commercial,(is_commercial==0))
+unique_all_non_commercial <- data.frame(unique(all_non_commercial$id))
+
+unique_all_non_commercial <- filter(unique_all_non_commercial, !(unique.all_non_commercial.id. %in% unique_all_commercial))
+
+unique_all_commercial = data.frame(unique_all_commercial)
+
+unique_all_commercial$is_commercial <- 1
+unique_all_non_commercial$is_commercial <- 0
+
+colnames(unique_all_commercial) = c("id","is_commercial")
+colnames(unique_all_non_commercial) = c("id","is_commercial")
+
+combined_unique_listings = rbind(unique_all_commercial,unique_all_non_commercial)
+
+listings_updated_1 = df_subset_columns(listings_file_1)
+listings_updated_2 = df_subset_columns(listings_file_2)
+
+total_listing_1 = merge(listings_updated_1,combined_unique_listings,by="id",all.x = TRUE)
+total_listing_2 = merge(listings_updated_2,combined_unique_listings,by="id",all.x = TRUE)
+
+total_listings = rbind(total_listing_1,total_listing_2)
+total_listings_commercial <- filter(total_listings, is_commercial==1)
+total_listings_non_commercial <- filter(total_listings, is_commercial==0)
+```
+
+```{r}
+review_columns <- c("review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value")
+total_listings_commercial$avg_review_value <- (total_listings_commercial$review_scores_accuracy + total_listings_commercial$review_scores_cleanliness + total_listings_commercial$review_scores_checkin + total_listings_commercial$review_scores_communication + total_listings_commercial$review_scores_location + total_listings_commercial$review_scores_value)/6
+total_listings_commercial$avg_review_value[is.na(total_listings_commercial$avg_review_value) ]<- 0
+
+
+total_listings_commercial$avg_review_value = total_listings_commercial$avg_review_value*10
+
+total_listings_commercial$price <- gsub("[$|,]", "", total_listings_commercial$price)
+total_listings_commercial$price <- as.numeric(total_listings_commercial$price)
+total_listings_commercial$avg_review_value <- total_listings_commercial
+
+neighbourhood_costs <- data.frame(aggregate(total_listings_commercial$price, by=list(total_listings_commercial$neighbourhood_cleansed), FUN=mean))
+names(neighbourhood_costs) <- c("neighbourhood", "avg_cost")
+
+neighbourhood_reviews <- data.frame(aggregate(total_listings_commercial$avg_review_value, by=list(total_listings_commercial$neighbourhood_cleansed), FUN=mean))
+names(neighbourhood_reviews) <- c("neighbourhood", "avg_review")
+
+neighbourhood_scores <- data.frame(aggregate(total_listings_commercial$review_scores_rating, by=list(total_listings_commercial$neighbourhood_cleansed), FUN=mean))
+names(neighbourhood_scores) <- c("neighbourhood", "avg_score")
+
+neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
+neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
+```
+
+
+
+```{r}
+review_columns <- c("review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value")
+total_listings_non_commercial$avg_review_value <- (total_listings_non_commercial$review_scores_accuracy + total_listings_non_commercial$review_scores_cleanliness + total_listings_non_commercial$review_scores_checkin + total_listings_non_commercial$review_scores_communication + total_listings_non_commercial$review_scores_location + total_listings_non_commercial$review_scores_value)/6
+total_listings_non_commercial$avg_review_value[is.na(total_listings_non_commercial$avg_review_value) ]<- 0
+
+
+total_listings_non_commercial$avg_review_value = total_listings_non_commercial$avg_review_value*10
+
+total_listings_non_commercial$price <- gsub("[$|,]", "", total_listings_non_commercial$price)
+total_listings_non_commercial$price <- as.numeric(total_listings_non_commercial$price)
+total_listings_non_commercial$avg_review_value <- total_listings_non_commercial
+
+neighbourhood_costs <- data.frame(aggregate(total_listings_non_commercial$price, by=list(total_listings_non_commercial$neighbourhood_cleansed), FUN=mean))
+names(neighbourhood_costs) <- c("neighbourhood", "avg_cost")
+
+neighbourhood_reviews <- data.frame(aggregate(total_listings_non_commercial$avg_review_value, by=list(total_listings_non_commercial$neighbourhood_cleansed), FUN=mean))
+names(neighbourhood_reviews) <- c("neighbourhood", "avg_review")
+
+neighbourhood_scores <- data.frame(aggregate(total_listings_non_commercial$review_scores_rating, by=list(total_listings_non_commercial$neighbourhood_cleansed), FUN=mean))
+names(neighbourhood_scores) <- c("neighbourhood", "avg_score")
+
+neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
+neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
+```
+
+
+```{r fig.width=10,fig.height=10}
+plot_unique = total_listings[!duplicated(total_listings$id),]
+pal = colorFactor("Set1", domain = total_listings$is_commercial) # Grab a palette
+color_sel1 = pal(total_listings$is_commercial)
+
+# subsetting temporarily
+plot_unique_head <- head(plot_unique, 1000)
+f <- leaflet(plot_unique_head) %>% setView(lng = -74.0156491, lat = 40.7022541, zoom = 10) %>% addProviderTiles(providers$OpenStreetMap)
+
+f %>% addCircles(color=color_sel1)
+
+airbnb_neighbourhoods <- geojsonio::geojson_read("data/neighbourhoods.geojson", what = "sp")
+pal <- colorNumeric("viridis", NULL)
+
+airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
+
+airbnb_neighbourhoods
+
+leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
+  addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+```
+
+
+```{r fig.width=10,fig.height=10}
+```
