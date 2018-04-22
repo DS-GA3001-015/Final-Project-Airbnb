@@ -30,6 +30,8 @@ library(RColorBrewer)
 library(geosphere)
 library(geojsonio)
 library(sp)
+library(htmltools)
+
 
 #Automate for entire dataset
 
@@ -132,9 +134,18 @@ airbnb_neighbourhoods <- geojsonio::geojson_read("data/neighbourhoods.geojson", 
 pal <- colorNumeric("viridis", NULL)
 
 airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
+
 p_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
   addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+
+p_commercial_review <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_review)) %>%
+  addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
+
+p_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
+  addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
 
 ```
 
@@ -167,15 +178,22 @@ pal <- colorNumeric("viridis", NULL)
 
 airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
 
-p_non_commercial_score<- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+p_non_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
   addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+
+p_non_commercial_review <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_review)) %>%
+  addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
+
+p_non_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
+  addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
 
 ```
 
 
 ```{r}
-library(htmltools)
 browsable(
   tagList(list(
     tags$div(
@@ -188,6 +206,32 @@ browsable(
     )
   ))
 )
+browsable(
+  tagList(list(
+    tags$div(
+      style = 'width:50%;display:block;float:left;',
+      p_commercial_review
+    ),
+    tags$div(
+      style = 'width:50%;display:block;float:left;',
+      p_non_commercial_review
+    )
+  ))
+)
+browsable(
+  tagList(list(
+    tags$div(
+      style = 'width:50%;display:block;float:left;',
+      p_commercial_cost
+    ),
+    tags$div(
+      style = 'width:50%;display:block;float:left;',
+      p_non_commercial_cost
+    )
+  ))
+)
+
+
 ```
 
 
