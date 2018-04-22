@@ -28,7 +28,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r}
+```{r warning=TRUE}
 
 #sapply(var1, tolower), converting to lower
 
@@ -175,14 +175,14 @@ NYU_Subway <- makeIcon(
   iconWidth = 25, iconHeight = 25)
 
 
-mclust<-leaflet(Listing_March_18)%>%addTiles()%>%addCircleMarkers(color = color_offsel1,popup = content,clusterOptions = markerClusterOptions(), group ="Listing_March_18" )%>%
-  addLegend(pal=pal,values=~Listing_March_18$neighbourhood_group, title = "Neighbourhood")%>%setView(-73.9949344, 40.7179112, zoom = 11)%>%addMarkers(data= tourist_places_list_main, group = "tourist_places_list_main",popup = paste("Tourist_place_name:",tourist_places_list_main$tourist_places_list, "<br>"))%>%addMarkers(data= stations_list_lat_long, group = "stations_list_lat_long",icon=NYU_Subway)%>%
+mclust<-leaflet(Listing_March_18)%>%addTiles()%>%addCircleMarkers(color = color_offsel1,popup = content,clusterOptions = markerClusterOptions(), group ="Airbnb Listing" )%>%
+  addLegend(pal=pal,values=~Listing_March_18$neighbourhood_group, title = "Neighbourhood")%>%setView(-73.9949344, 40.7179112, zoom = 11)%>%addMarkers(data= tourist_places_list_main, group = "Tourist Places",popup = paste("Tourist_place_name:",tourist_places_list_main$tourist_places_list, "<br>"))%>%addMarkers(data= stations_list_lat_long, group = "Subway Station",icon=NYU_Subway)%>%
   addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
   addProviderTiles(providers$Stamen.TonerLite, group="Toner Lite") %>%
   # Layers control
   addLayersControl(
 baseGroups = c("OpenStreetMap", "Toner", "Toner Lite"),
-overlayGroups = c("Listing_March_18","tourist_places_list_main","stations_list_lat_long"),
+overlayGroups = c("Airbnb Listing","Tourist Places","Subway Station"),
 options = layersControlOptions(collapsed = TRUE) )%>%setView(-73.9949344, 40.7179112, zoom = 13)
 
 mclust
