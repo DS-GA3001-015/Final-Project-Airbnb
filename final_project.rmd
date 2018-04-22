@@ -236,23 +236,21 @@ browsable(
 
 
 ```{r fig.width=5,fig.height=5}
-#plot_unique = total_listings[!duplicated(total_listings$id),]
-#pal = colorFactor("Set1", domain = total_listings$is_commercial) # Grab a palette
-#color_sel1 = pal(total_listings$is_commercial)
-
-# subsetting temporarily
-#plot_unique_head <- head(plot_unique, 1000)
-#f <- leaflet(plot_unique_head) %>% setView(lng = -74.0156491, lat = 40.7022541, zoom = 10) %>% addProviderTiles(providers$OpenStreetMap)
-
-#f %>% addCircles(color=color_sel1)
-
-listings_gp = group_by(total_listings,is_commercial)
+listings_gp = group_by(total_listings,is_commercial,neighbourhood_group_cleansed)
 listings_sm = summarise(listings_gp,count=n())
-colnames(listings_sm) = c("Listing_Type","Count")
+colnames(listings_sm) = c("Listing_Type","Borough","Count")
 
-listings_sm$Count = ((listings_sm$Count)/nrow(total_listings))*100
+sum_borough_commer = as.numeric(aggregate(listings_sm$Count,by=list(listings_sm$Listing_Type),sum)[1,2])
+sum_borough_noncommer = as.numeric(aggregate(listings_sm$Count,by=list(listings_sm$Listing_Type),sum)[2,2])
 
-ggplot(listings_sm,aes(x=Listing_Type,y=Count)) + geom_bar(stat="identity",width = 0.1) + coord_flip() + xlab("Property Type") + ylab("Percentage") + ggtitle("Distribution of Listings") + theme_minimal()
+for(i in 1:nrow(listings_sm)){
+  if(listings_sm[i,"Listing_Type"]=="Commercial Listing")
+    listings_sm[i,"Percentage"] <- (listings_sm[i,"Count"]*100)/sum_borough_commer
+  else
+    listings_sm[i,"Percentage"] <- (listings_sm[i,"Count"]*100)/sum_borough_noncommer
+}
+
+ggplot(data=listings_sm, aes(x=Listing_Type, y=Percentage, fill=Borough))  + geom_bar(stat="identity",position=position_dodge())  + xlab("Listing Type") + ylab("Percentage") + ggtitle("Distribution of Listings") + theme_minimal() + scale_fill_brewer(palette="Paired")
 
 apartments = total_listings %>% filter(property_type=="Apartment")
 
@@ -260,19 +258,17 @@ apt_gp = group_by(apartments,is_commercial,room_type)
 apt_ps = summarise(apt_gp,count=n())
 colnames(apt_ps) = c("Listing_Type","Property_Type","Count")
 
-sum_commer = aggregate(apt_ps$Count,by=list(apt_ps$Listing_Type),sum)[1,2]
-sum_noncommer = aggregate(apt_ps$Count,by=list(apt_ps$Listing_Type),sum)[2,2]
+sum_commer = as.numeric(aggregate(apt_ps$Count,by=list(apt_ps$Listing_Type),sum)[1,2])
+sum_noncommer = as.numeric(aggregate(apt_ps$Count,by=list(apt_ps$Listing_Type),sum)[2,2])
 
-apt_ps$Percentage = 0
-
-for(i in nrow(apt_ps)){
+for(i in 1:nrow(apt_ps)){
   if(apt_ps[i,"Listing_Type"]=="Commercial Listing")
-    apt_ps[i,"Count"] <- (apt_ps[i,"Count"]/sum_commer)*100
+    apt_ps[i,"Percentage"] <- (apt_ps[i,"Count"]*100)/sum_commer
   else
-    apt_ps[i,"Count"] <- (apt_ps[i,"Count"]/sum_noncommer)*100
+    apt_ps[i,"Percentage"] <- (apt_ps[i,"Count"]*100)/sum_noncommer
 }
 
-ggplot(data=apt_ps, aes(x=Property_Type, y=Percentage, fill=Listing_Type)) +
-geom_bar(stat="identity", position=position_dodge())
+ggplot(data=apt_ps, aes(x=Listing_Type, y=Percentage, fill=Property_Type)) +
+geom_bar(stat="identity", position=position_dodge()) + xlab("Listing_Type") + ylab("Percentage") + ggtitle("Distribution of Listings") + theme_minimal() + scale_fill_brewer(palette="Paired")
 ```
 
