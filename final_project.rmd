@@ -107,7 +107,7 @@ total_listings_non_commercial <- filter(total_listings, is_commercial==0)
 
 ```{r}
 review_columns <- c("review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value")
-total_listings_commercial$avg_review_value <- (total_listings_commercial$review_scores_accuracy + total_listings_commercial$review_scores_cleanliness + total_listings_commercial$review_scores_checkin + total_listings_commercial$review_scores_communication + total_listings_commercial$review_scores_location + total_listings_commercial$review_scores_value)/6
+total_listings_commercial$avg_review_value <- ((total_listings_commercial$review_scores_accuracy + total_listings_commercial$review_scores_cleanliness + total_listings_commercial$review_scores_checkin + total_listings_commercial$review_scores_communication + total_listings_commercial$review_scores_location + total_listings_commercial$review_scores_value)/6)
 total_listings_commercial$avg_review_value[is.na(total_listings_commercial$avg_review_value) ]<- 0
 
 
@@ -115,7 +115,6 @@ total_listings_commercial$avg_review_value = total_listings_commercial$avg_revie
 
 total_listings_commercial$price <- gsub("[$|,]", "", total_listings_commercial$price)
 total_listings_commercial$price <- as.numeric(total_listings_commercial$price)
-total_listings_commercial$avg_review_value <- total_listings_commercial
 
 neighbourhood_costs <- data.frame(aggregate(total_listings_commercial$price, by=list(total_listings_commercial$neighbourhood_cleansed), FUN=mean))
 names(neighbourhood_costs) <- c("neighbourhood", "avg_cost")
@@ -128,6 +127,15 @@ names(neighbourhood_scores) <- c("neighbourhood", "avg_score")
 
 neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
 neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
+
+airbnb_neighbourhoods <- geojsonio::geojson_read("data/neighbourhoods.geojson", what = "sp")
+pal <- colorNumeric("viridis", NULL)
+
+airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
+p_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
+  addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+
 ```
 
 
@@ -142,7 +150,6 @@ total_listings_non_commercial$avg_review_value = total_listings_non_commercial$a
 
 total_listings_non_commercial$price <- gsub("[$|,]", "", total_listings_non_commercial$price)
 total_listings_non_commercial$price <- as.numeric(total_listings_non_commercial$price)
-total_listings_non_commercial$avg_review_value <- total_listings_non_commercial
 
 neighbourhood_costs <- data.frame(aggregate(total_listings_non_commercial$price, by=list(total_listings_non_commercial$neighbourhood_cleansed), FUN=mean))
 names(neighbourhood_costs) <- c("neighbourhood", "avg_cost")
@@ -155,32 +162,44 @@ names(neighbourhood_scores) <- c("neighbourhood", "avg_score")
 
 neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
 neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
-```
-
-
-```{r fig.width=10,fig.height=10}
-plot_unique = total_listings[!duplicated(total_listings$id),]
-pal = colorFactor("Set1", domain = total_listings$is_commercial) # Grab a palette
-color_sel1 = pal(total_listings$is_commercial)
-
-# subsetting temporarily
-plot_unique_head <- head(plot_unique, 1000)
-f <- leaflet(plot_unique_head) %>% setView(lng = -74.0156491, lat = 40.7022541, zoom = 10) %>% addProviderTiles(providers$OpenStreetMap)
-
-f %>% addCircles(color=color_sel1)
-
 airbnb_neighbourhoods <- geojsonio::geojson_read("data/neighbourhoods.geojson", what = "sp")
 pal <- colorNumeric("viridis", NULL)
 
 airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
 
-airbnb_neighbourhoods
-
-leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+p_non_commercial_score<- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
   addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+
+```
+
+
+```{r}
+library(htmltools)
+browsable(
+  tagList(list(
+    tags$div(
+      style = 'width:50%;display:block;float:left;',
+      p_commercial_score
+    ),
+    tags$div(
+      style = 'width:50%;display:block;float:left;',
+      p_non_commercial_score
+    )
+  ))
+)
 ```
 
 
 ```{r fig.width=10,fig.height=10}
+#plot_unique = total_listings[!duplicated(total_listings$id),]
+#pal = colorFactor("Set1", domain = total_listings$is_commercial) # Grab a palette
+#color_sel1 = pal(total_listings$is_commercial)
+
+# subsetting temporarily
+#plot_unique_head <- head(plot_unique, 1000)
+#f <- leaflet(plot_unique_head) %>% setView(lng = -74.0156491, lat = 40.7022541, zoom = 10) %>% addProviderTiles(providers$OpenStreetMap)
+
+#f %>% addCircles(color=color_sel1)
 ```
+
