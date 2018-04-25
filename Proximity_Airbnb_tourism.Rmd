@@ -1,0 +1,224 @@
+---
+title: "Project_Proximity to tourism"
+author: "Ranjita"
+date: "4/21/2018"
+output: 
+  html_document:
+      keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#install.packages('ggmap')
+#install.packages("dplyr")
+#install.packages("plyr")
+#install.packages("leaflet")
+
+library(ggmap)
+library(dplyr)
+library(plyr)
+library(leaflet)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r warning=TRUE}
+
+#sapply(var1, tolower), converting to lower
+
+tourist_places_list<-c("bryant park","one world observatory","","The Tour","park slope", "Columbus Circle","Rockefeller Center","United Nations Headquarters","Ellis Island","barclays center","NYC Information Center","The museum of modern art","Elegant Tightwad Shopping Tours","Statue of Liberty","Museum of the Moving Image","New York Botanical Garden","New York Botanical Garden","Lincoln Center", "Bronx Opera House Hotel", "theater for a new audience","Tiffany & Co. Foundation Gallery",
+'Chinese Scholars Garden',
+'Museum of Sex',
+'City Reliquary',
+'Staten Island Ferry',
+'MCC Theater',
+'Century 21',
+'Socrates Sculpture Park',
+'Wave Hill House',
+'Brooklyn History and Pizza Tour',
+'LIC Flea',
+'Yankee Stadium',
+"Brandy's Piano Bar",
+'Tenement Museum',
+'african burial grounds',
+'City Winery',
+'the lakeside restaurant',
+'Arthur Avenue',
+'Flushing Meadows-Corona Park',
+'City Island',
+'Trinity Church',
+'Citi Field',
+'Brooklyn Brewery',
+'coney island',
+'FAO Schwarz',
+'230 Fifth',
+'The Queens Museum',
+'La Marina',
+'Brooklyn Bridge',
+'Tango House',
+'brooklyn historical society',
+'Gotham West Market',
+'The Metropolitan Museum of Art',
+'Brooklyn Museum',
+'Empire State Building',
+'The Guggenheim Museum',
+'Refinery Hotel',
+'New York Public Library',
+'Jacob K. Javits Center',
+'The New Museum',
+'Museum of Mathematics',
+'Four Freedoms Park ',
+'museum of natural history',
+'The Staten Island Zoo',
+'Green-wood Cemetery'
+ )
+
+#tourist_places1<-sapply(tourist_places, tolower)
+
+tourist_places_list_df<-as.data.frame(tourist_places_list)
+
+geo_tourist_places_list<-geocode(as.character(tourist_places_list_df$tourist_places_list))
+
+tourist_places_list_main<-cbind(tourist_places_list_df,geo_tourist_places_list)
+
+geocode("Columbus Circle")
+
+filter(tourist_places_list_main, tourist_places_list_main$tourist_places_list == "Columbus Circle") 
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "Columbus Circle" )]<-"40.76803"
+
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "Columbus Circle" )]<-"-73.9832"
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "one world observatory" )]<-"40.7127"
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "one world observatory" )]<-"-74.0134"
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "Ellis Island" )]<-"40.6995"
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "Ellis Island" )]<-"-74.0396"
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "coney island")]<-"40.5755"
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "coney island" )]<-"-74.0396"
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "Brooklyn Museum")]<-"40.6712"
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "Brooklyn Museum" )]<-"-73.9636"
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "The Metropolitan Museum of Art")]<-"40.7794"
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "The Metropolitan Museum of Art" )]<-"-73.9632"
+
+tourist_places_list_main$lat[which(tourist_places_list_main$tourist_places_list == "Four Freedoms Park")]<-"40.7508"
+
+tourist_places_list_main$lon[which(tourist_places_list_main$tourist_places_list == "Four Freedoms Park" )]<-"-73.9604"
+
+tourist_places_list_main<-filter(tourist_places_list_main, lat != "NA")
+
+tourist_places_list_main$lat<-as.numeric(tourist_places_list_main$lat)
+
+tourist_places_list_main$lon<-as.numeric(tourist_places_list_main$lon)
+
+#importing march data file
+Listing_March_18<-read.csv("/Users/ranjitarajeevashetty/Downloads/March_2018/listings.csv", header = TRUE)
+
+stations_list <- read.csv('/Users/ranjitarajeevashetty/Documents/R-Visualization/R Project/subway.csv', header=TRUE)
+
+
+#substr('ABC_EFG_HIG_ADF_AKF_MNB', 9, 11)
+
+
+
+stations_list$longitude<- as.numeric(substr(stations_list$the_geom, 8, 20))
+
+#stations_list$laltitude<-as.numeric(substr(stations_list$the_geom, 27, 44))
+
+
+#gsub(" .*$", "",stations_list$the_geom)
+d1<-substring(stations_list$the_geom, regexpr(" ", stations_list$the_geom) + 1)
+d2<-substring(d1, regexpr(" ", d1) + 1)
+
+
+
+d3<-gsub(')','',d2)
+
+latitude<-as.numeric(d3)
+
+
+stations_list_lat_long<- cbind(stations_list, latitude)
+
+Listing_March_18%>%distinct(neighbourhood_group)
+
+content<- paste("neighbourhood:", Listing_March_18$neighbourhood,"<br/>",
+                "neighbourhood_group:", Listing_March_18$neighbourhood_group,"<br/>",
+                "room_type:",Listing_March_18$room_type,"<br/>",
+                "Availability:", Listing_March_18$availability_365,"<br/>")
+
+library(RColorBrewer)
+pal = colorFactor("Set1", domain = Listing_March_18$neighbourhood_group) # Grab a palette
+color_offsel1 = pal(Listing_March_18$neighbourhood_group)
+
+
+#geocode("Elegant Tightwad Shopping Tours")
+
+#adding subway image
+
+NYU_Subway <- makeIcon(
+    iconUrl = "https://images-na.ssl-images-amazon.com/images/I/41NPZ9vZKNL.png",
+  iconWidth = 25, iconHeight = 25)
+
+
+mclust<-leaflet(Listing_March_18)%>%addTiles()%>%addCircleMarkers(color = color_offsel1,popup = content,clusterOptions = markerClusterOptions(), group ="Airbnb Listing" )%>%
+  addLegend(pal=pal,values=~Listing_March_18$neighbourhood_group, title = "Neighbourhood")%>%setView(-73.9949344, 40.7179112, zoom = 11)%>%addMarkers(data= tourist_places_list_main, group = "Tourist Places",popup = paste("Tourist_place_name:",tourist_places_list_main$tourist_places_list, "<br>"))%>%addMarkers(data= stations_list_lat_long, group = "Subway Station",icon=NYU_Subway)%>%
+  addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
+  addProviderTiles(providers$Stamen.TonerLite, group="Toner Lite") %>%
+  # Layers control
+  addLayersControl(
+baseGroups = c("OpenStreetMap", "Toner", "Toner Lite"),
+overlayGroups = c("Airbnb Listing","Tourist Places","Subway Station"),
+options = layersControlOptions(collapsed = TRUE) )%>%setView(-73.9949344, 40.7179112, zoom = 13)
+
+mclust
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+```{r}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
