@@ -1,4 +1,5 @@
 library(shiny)
+library(leaflet)
 
 shinyUI(fluidPage(
   tags$head(includeCSS("styles.css")),

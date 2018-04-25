@@ -1,6 +1,8 @@
 library(shiny)
 library(leaflet)
 library(sp)
+library(data.table)
+library(zoo)
 
 shinyServer(function(input, output, session) {
   
@@ -11,11 +13,15 @@ shinyServer(function(input, output, session) {
     map
   })
   
+  
   data_replace_mean<- function(data){
-    for(i in 1:ncol(data)){
-      if((class(data[,i]) == "numeric") | (class(data[,i])=="integer")){
-        data[is.na(data[,i]), i] <- mean(data[,i], na.rm = TRUE)
-      }
+    numeric_col = c("price","calculated_host_listings_count","availability_365",
+                    "review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin",
+                    "review_scores_communication","review_scores_location","review_scores_value","availability_30")
+    
+    for(i in numeric_col){
+      #data[, i := na.aggregate(i,FUN=median)]
+      data[is.na(data[,i]), i] <- median(data[,i], na.rm = TRUE)
     }
     
     for(i in 1:nrow(data)){
@@ -32,29 +38,44 @@ shinyServer(function(input, output, session) {
   }
   
   file_change <- reactive({
+    #t1=proc.time()
     file_to_read <- paste("../data/",as.character(input$month),"_",as.character(input$year),"_listings.csv",sep="")
-    col_keep <- c("character","NULL","NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL",
-                  "NULL","NULL","NULL","NULL","character","NULL","character","NULL","NULL","NULL","NULL","NULL",
-                  "NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL",
-                  "character","character","character","character","NULL","NULL","character","NULL","NULL",
-                  "numeric","numeric","NULL","character","character","NULL","numeric","numeric","NULL",
-                  "NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL",
-                  "NULL","NULL","numeric","numeric","numeric","numeric","NULL","NULL","NULL","NULL",
-                  "numeric","numeric","numeric","numeric","numeric","numeric","numeric","NULL","NULL",
-                  "NULL","NULL","NULL","NULL","NULL","numeric","NULL")
-    df <- read.csv(file_to_read,colClasses = col_keep)
+    # col_keep <- c("character","NULL","NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL",
+    #               "NULL","NULL","NULL","NULL","character","NULL","character","NULL","NULL","NULL","NULL","NULL",
+    #               "NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL",
+    #               "character","character","character","character","NULL","NULL","character","NULL","NULL",
+    #               "numeric","numeric","NULL","character","character","NULL","numeric","numeric","NULL",
+    #               "NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL",
+    #               "NULL","NULL","numeric","numeric","numeric","numeric","NULL","NULL","NULL","NULL",
+    #               "numeric","numeric","numeric","numeric","numeric","numeric","numeric","NULL","NULL",
+    #               "NULL","NULL","NULL","NULL","NULL","numeric","NULL")
+    
+    listings_col_to_keep = c("id","name","host_id","host_name","neighbourhood_cleansed",
+                             "neighbourhood_group_cleansed","city","state","smart_location","latitude","longitude",
+                             "property_type","room_type","bathrooms","bedrooms","price","review_scores_rating",
+                             "review_scores_accuracy","review_scores_cleanliness","review_scores_checkin",
+                             "review_scores_communication","review_scores_location","review_scores_value",
+                             "reviews_per_month","host_listings_count","host_total_listings_count",
+                             "calculated_host_listings_count","availability_365","availability_30",
+                             "number_of_reviews","summary")
+    
+    #df <- read.csv(file_to_read,colClasses = col_keep)
+    df = data.table::fread(file_to_read,select = listings_col_to_keep)
+    df = as.data.frame(df)
+    #print(proc.time()-t1)
+    #print("DONE READ")
+    df$price <- gsub("[$|,]", "", df$price)
+    df$price <- as.numeric(df$price)
+    
     df <- data_replace_mean(df)
-
+    
     df$avg_review_value <- ((df$review_scores_accuracy + df$review_scores_cleanliness + 
                                df$review_scores_checkin + df$review_scores_communication + 
                                df$review_scores_location + df$review_scores_value)/6)
     
     df$avg_review_value[is.na(df$avg_review_value) ]<- 0
-    
-    
     df$avg_review_value = df$avg_review_value*10
-    df$price <- gsub("[$|,]", "", df$price)
-    df$price <- as.numeric(df$price)
+    #df = as.data.table(df)
     return(df)
   })
   
@@ -72,8 +93,10 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$submit2,{
     df = file_change()
-    
-    if(input$in_checkboxgroup=="CL"){
+    if(is.null(input$in_checkboxgroup)){
+      df_subs=df
+    }
+    else if(input$in_checkboxgroup=="CL"){
       df_subs = subset(df,is_commercial=="Commercial Listing")
       #print(nrow(df_subs))
       }
