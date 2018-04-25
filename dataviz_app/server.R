@@ -5,7 +5,7 @@ library(data.table)
 library(zoo)
 
 shinyServer(function(input, output, session) {
-  t1=proc.time()
+  #t1=proc.time()
   output$nymap <- renderLeaflet({
     map <- leaflet() %>%
       addTiles("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png") %>%
@@ -39,12 +39,12 @@ shinyServer(function(input, output, session) {
     data$is_commercial = ifelse(((data$calculated_host_listings_count > 1)  &  (data$availability_365 / 365 < 0.3) & 
                                   (data$review_scores_rating > 50)),"Commercial Listing","Household Listing")
     
-    print("ROWS")
-    temp1 = subset(data,is_commercial=="Commercial Listing")
-    print(nrow(temp1))
+    #print("ROWS")
+    #temp1 = subset(data,is_commercial=="Commercial Listing")
+    #print(nrow(temp1))
     
-    temp2 = subset(data,is_commercial=="Household Listing")
-    print(nrow(temp2))
+    #temp2 = subset(data,is_commercial=="Household Listing")
+    #print(nrow(temp2))
     return(data)
   }
   
@@ -73,16 +73,16 @@ shinyServer(function(input, output, session) {
     #df <- read.csv(file_to_read,colClasses = col_keep)
     df = data.table::fread(file_to_read,select = listings_col_to_keep)
     df = as.data.frame(df)
-    print("File Read")
-    print(proc.time()-t1)
+    #print("File Read")
+    #print(proc.time()-t1)
     #print("DONE READ")
     df$price <- gsub("[$|,]", "", df$price)
     df$price <- as.numeric(df$price)
     
     df <- data_replace_mean(df)
     
-    print("Processing COmplete")
-    print(proc.time()-t1)
+    #print("Processing COmplete")
+    #print(proc.time()-t1)
     
     df$avg_review_value <- ((df$review_scores_accuracy + df$review_scores_cleanliness + 
                                df$review_scores_checkin + df$review_scores_communication + 
@@ -91,8 +91,8 @@ shinyServer(function(input, output, session) {
     df$avg_review_value[is.na(df$avg_review_value) ]<- 0
     df$avg_review_value = df$avg_review_value*10
     
-    print("File Read COmplete")
-    print(proc.time()-t1)
+    #print("File Read COmplete")
+    #print(proc.time()-t1)
     
     #df = as.data.table(df)
     return(df)
@@ -101,38 +101,36 @@ shinyServer(function(input, output, session) {
   observeInputs <- observeEvent(input$submit,{
     df = file_change()
     #print(input$price)
-    print("1st function call")
-    print(proc.time()-t1)
+    #print("1st function call")
+    #print(proc.time()-t1)
     df_subset = subset(df,(df$price > input$price) & (df$review_scores_rating > input$quality) & 
                          (df$bedrooms > input$bedrooms) & (df$bathrooms > input$bathrooms) )
     map <- leafletProxy("nymap", session) %>%
       clearShapes() %>%
       clearControls() %>%
       addCircles(lng = df_subset$longitude,lat = df_subset$latitude)
-    print(proc.time()-t1)
+    #print(proc.time()-t1)
   })
   
   observeEvent(input$submit2,{
     df = file_change()
-    print("Second call")
-    print(proc.time()-t1)
-    if(is.null(input$in_checkboxgroup)){
+    #print("Second call")
+    #print(proc.time()-t1)
+    #sample = paste(input$in_checkboxgroup,sep = ", ")
+    if(is.null(input$in_radio)){
       df_subs=df
     }
-    else if(input$in_checkboxgroup=="CL"){
+    else if(input$in_radio=="CL"){
       df_subs = subset(df,is_commercial=="Commercial Listing")
       #print(nrow(df_subs))
       }
-    else if(input$in_checkboxgroup=="HL"){
+    else if(input$in_radio=="HL"){
       df_subs = subset(df,is_commercial=="Household Listing")
       #print(nrow(df_subs))
       }
-    else{
-      df_subs = df
-      #print(nrow(df_subs))
-    }
-    print("second call first")
-    print(proc.time()-t1)
+    
+    #print("second call first")
+    #print(proc.time()-t1)
     
     neighbourhood_costs <- data.frame(aggregate(df_subs$price, by=list(df_subs$neighbourhood_cleansed), FUN=mean))
     names(neighbourhood_costs) <- c("neighbourhood", "avg_cost")
@@ -151,11 +149,11 @@ shinyServer(function(input, output, session) {
     airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
     #print(class(airbnb_neighbourhoods))
     
-    print("second call last")
-    print(proc.time()-t1)
+    #print("second call last")
+    #print(proc.time()-t1)
     
     if(input$radio=="score"){
-      print("SCORE")
+      #print("SCORE")
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
@@ -163,7 +161,7 @@ shinyServer(function(input, output, session) {
         leaflet::addLegend(pal = pal, values = ~(airbnb_neighbourhoods$avg_score), opacity = 1.0)
     }
     else if(input$radio=="review"){
-      print("REVIEW")
+      #print("REVIEW")
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
@@ -171,7 +169,7 @@ shinyServer(function(input, output, session) {
         leaflet::addLegend(pal = pal, values = ~(airbnb_neighbourhoods$avg_review), opacity = 1.0)
     }
     else if(input$radio=="cost"){
-      print("COST")
+      #print("COST")
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 

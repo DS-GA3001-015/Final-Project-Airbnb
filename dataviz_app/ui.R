@@ -51,10 +51,11 @@ shinyUI(fluidPage(
                            actionButton('submit','Submit')),
                   tabPanel("AirBnB Insights",
                            
-                           checkboxGroupInput("in_checkboxgroup", "Select Listing Type",
-                                              c("Commercial Listing" = "CL",
-                                                "Household Listing" = "HL"),
-                                              selected = NULL),
+                           radioButtons("in_radio", "Select Listing Type",selected=character(0),
+                                              choiceNames = list("Commercial Listing",
+                                                "Household Listing"),
+                                        choiceValues = list("CL","HL")
+                                              ),
             
                            radioButtons("radio", "Parameters for analysis", selected = character(0),
                                         choiceNames = list("Cost","Review","Adjusted Listing Score"),
