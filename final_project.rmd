@@ -70,8 +70,8 @@ df_commercial = subset(df_subset,select = c("id","is_commercial"))
 return (df_commercial)
 }
 
-listings_file_1 <- read.csv("data/jan_listings.csv")
-listings_file_2 <- read.csv("data/feb_listings.csv")
+listings_file_1 <- read.csv("data/January_2016_listings.csv")
+listings_file_2 <- read.csv("data/February_2016_listings.csv")
 
 listing_1_commercial <- clean_data(listings_file_1)
 listing_2_commercial <- clean_data(listings_file_2)
@@ -137,15 +137,15 @@ airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, 
 
 p_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
-  addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
 
 p_commercial_review <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_review)) %>%
-  addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
 
 p_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
-  addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
 
 ```
 
@@ -180,15 +180,15 @@ airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, 
 
 p_non_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
-  addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
 
 p_non_commercial_review <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_review)) %>%
-  addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
 
 p_non_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
-  addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
 
 ```
 
