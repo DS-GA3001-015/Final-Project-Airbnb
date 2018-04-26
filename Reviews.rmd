@@ -61,7 +61,6 @@ review_percentage$Count.x <- (review_percentage$Count.x * 100 )/ review_percenta
 x <- unique(review_percentage$review_quality)
 y <- filter(review_percentage, Listing_Type == "Commercial Listing")$Count.x
 y2 <- filter(review_percentage, Listing_Type == "Household Listing")$Count.x
-text <- c('27% market share', '24% market share', '19% market share')
 data <- data.frame(x, y, y2, text)
 
 data
