@@ -537,9 +537,9 @@ total_listing_noncom_newdf<-total_listing_noncom[,c("id","name","Tourist_place",
 
 total_listing_min_dist<-rbind(total_listing_com_newdf,total_listing_noncom_newdf)
 
-merge(total_listing_com_newdf,total_listing_noncom_newdf,by="Tourist_place")
+#merge(total_listing_com_newdf,total_listing_noncom_newdf,by="Tourist_place")
 
-merge(total_listing_min_dist,tourist_places_list_main,by.x=Tourist_place,by.y=Tourist_place)
+#merge(total_listing_min_dist,tourist_places_list_main,by.x=Tourist_place,by.y=Tourist_place)
 
 total_listing_min_dist_df<-aggregate(total_listing_min_dist[,4],list(total_listing_min_dist$Tourist_place,total_listing_min_dist$is_commercial), min)
 
