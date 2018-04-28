@@ -64,7 +64,10 @@ shinyUI(fluidPage(
                            
                            actionButton('submit2','Submit')
                            
-                           ))
+                           ),
+                  tabPanel("Trend Over the Years",
+                           
+                           actionButton('submit3','click')))
                 
                 
   )))

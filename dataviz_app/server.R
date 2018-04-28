@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
   
   file_change <- reactive({
     
-    file_to_read <- paste("../data/",as.character(input$month),"_",as.character(input$year),"_listings.csv",sep="")
+    file_to_read <- paste("../data/",as.character(input$year),"_",as.character(input$month),"_listings.csv",sep="")
     # col_keep <- c("character","NULL","NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL",
     #               "NULL","NULL","NULL","NULL","character","NULL","character","NULL","NULL","NULL","NULL","NULL",
     #               "NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL",
@@ -176,6 +176,50 @@ shinyServer(function(input, output, session) {
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(airbnb_neighbourhoods$avg_cost)) %>%
         leaflet::addLegend(pal = pal, values = ~(airbnb_neighbourhoods$avg_cost), opacity = 1.0)
     }
+  })
+  
+  v <- reactiveValues(count_button = 0)
+  
+  observeEvent(input$submit3,{
+    
+    #invalidateLater(2000)
+    v$count_button = v$count_button + 1
+    
+    file_read_short=c("2016_January","2016_February","2016_March","2016_April","2016_May","2016_June",
+       "2016_July","2016_August","2016_September","2016_October","2016_November","2016_December",
+       "2017_January","2017_February","2017_March","2017_April","2017_May","2017_June",
+       "2017_July","2017_August","2017_September","2017_October","2017_November","2017_December")
+    #invalidateLater(2000,session = NULL)
+    #for(i in file_read_short){
+      i = file_read_short[v$count_button]
+      #print(v$count_button)
+      #print(i)
+      file_to_read <- paste("../data/",as.character(i),"_listings.csv",sep="")
+      listings_col_to_keep = c("id","name","host_id","host_name","neighbourhood_cleansed",
+                               "neighbourhood_group_cleansed","city","state","smart_location","latitude","longitude",
+                               "property_type","room_type","bathrooms","bedrooms","price","review_scores_rating",
+                               "review_scores_accuracy","review_scores_cleanliness","review_scores_checkin",
+                               "review_scores_communication","review_scores_location","review_scores_value",
+                               "reviews_per_month","host_listings_count","host_total_listings_count",
+                               "calculated_host_listings_count","availability_365","availability_30",
+                               "number_of_reviews","summary")
+      read_df = data.table::fread(file_to_read,select = listings_col_to_keep )
+      read_df = as.data.frame(read_df)
+      read_df = subset(read_df,property_type=="Apartment")
+      #read_df = head(read_df,n=100)
+      #print(nrow(read_df))
+      pal = colorFactor("Set1", domain = read_df$room_type) # Grab a palette
+      color_pts = pal(read_df$room_type)
+      #t1=proc.time()
+      map1 <- leafletProxy(mapId = "nymap", session = session) %>%
+              clearShapes()%>%
+              clearControls()%>%
+              addCircles(lat = read_df$latitude,lng = read_df$longitude,color=color_pts) %>%
+              addLegend(pal = pal, values = read_df$room_type)
+      map1
+      
+      #print(proc.time()-t1)
+    #}
   })
   
 })
