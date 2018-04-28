@@ -1,0 +1,96 @@
+---
+title: "Policy-effects"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(data.table)
+library(dplyr)
+```
+
+```{r}
+January_2016 <- as.data.frame(fread("all Listing Data/2016_January_listings.csv", select = c("id","room_type")))
+February_2016 <- as.data.frame(fread("all Listing Data/2016_February_listings.csv", select = c("id","room_type")))
+March_2016 <- as.data.frame(fread("all Listing Data/2016_March_listings.csv", select = c("id","room_type")))
+April_2016 <- as.data.frame(fread("all Listing Data/2016_April_listings.csv", select = c("id","room_type")))
+May_2016 <- as.data.frame(fread("all Listing Data/2016_May_listings.csv", select = c("id","room_type")))
+June_2016 <- as.data.frame(fread("all Listing Data/2016_June_listings.csv", select = c("id","room_type")))
+July_2016 <- as.data.frame(fread("all Listing Data/2016_July_listings.csv", select = c("id","room_type")))
+August_2016 <- as.data.frame(fread("all Listing Data/2016_August_listings.csv", select = c("id","room_type")))
+September_2016 <- as.data.frame(fread("all Listing Data/2016_September_listings.csv", select = c("id","room_type")))
+October_2016 <- as.data.frame(fread("all Listing Data/2016_October_listings.csv", select = c("id","room_type")))
+November_2016 <- as.data.frame(fread("all Listing Data/2016_November_listings.csv", select = c("id","room_type")))
+December_2016 <- as.data.frame(fread("all Listing Data/2016_December_listings.csv", select = c("id","room_type")))
+```
+
+```{r}
+df_2016 <- rbindlist(list(January_2016,February_2016,March_2016,April_2016,May_2016,June_2016,July_2016,August_2016,September_2016, October_2016,November_2016, December_2016))
+```
+
+
+```{r}
+January_2017 <- as.data.frame(fread("all Listing Data/2017_January_listings.csv", select = c("id","room_type")))
+February_2017 <- as.data.frame(fread("all Listing Data/2017_February_listings.csv", select = c("id","room_type")))
+March_2017 <- as.data.frame(fread("all Listing Data/2017_March_listings.csv", select = c("id","room_type")))
+April_2017 <- as.data.frame(fread("all Listing Data/2017_April_listings.csv", select = c("id","room_type")))
+May_2017 <- as.data.frame(fread("all Listing Data/2017_May_listings.csv", select = c("id","room_type")))
+June_2017 <- as.data.frame(fread("all Listing Data/2017_June_listings.csv", select = c("id","room_type")))
+July_2017 <- as.data.frame(fread("all Listing Data/2017_July_listings.csv", select = c("id","room_type")))
+August_2017 <- as.data.frame(fread("all Listing Data/2017_August_listings.csv", select = c("id","room_type")))
+September_2017 <- as.data.frame(fread("all Listing Data/2017_September_listings.csv", select = c("id","room_type")))
+October_2017 <- as.data.frame(fread("all Listing Data/2017_October_listings.csv", select = c("id","room_type")))
+November_2017 <- as.data.frame(fread("all Listing Data/2017_November_listings.csv", select = c("id","room_type")))
+December_2017 <- as.data.frame(fread("all Listing Data/2017_December_listings.csv", select = c("id","room_type")))
+
+```
+
+```{r}
+df_2017 <- rbindlist(list(January_2017,February_2017,March_2017,April_2017,May_2017,June_2017,July_2017,August_2017,September_2017, October_2017,November_2017, December_2017))
+
+```
+
+```{r}
+df<-as.data.frame(table(df_2016$id, df_2016$room_type))
+df$Freq[df$Freq > 1] <- 1
+names(df) <- c("id","room_type", "count")
+
+entire_homes <- sum(filter(df, df$room_type=="Entire home/apt")$count)
+private_room <- sum(filter(df, df$room_type=="Private room")$count)
+shared_room <- sum(filter(df, df$room_type=="Shared room")$count)
+room_type <- c("Entire home/apt", "Private room", "Shared room")
+count <- c(entire_homes, private_room, shared_room)
+counts_2016 <- data.frame(room_type, count)
+counts_2016$year <- 2016
+```
+
+```{r}
+df<-as.data.frame(table(df_2017$id, df_2017$room_type))
+df$Freq[df$Freq > 1] <- 1
+names(df) <- c("id","room_type", "count")
+
+entire_homes <- sum(filter(df, df$room_type=="Entire home/apt")$count)
+private_room <- sum(filter(df, df$room_type=="Private room")$count)
+shared_room <- sum(filter(df, df$room_type=="Shared room")$count)
+count <- c(entire_homes, private_room, shared_room)
+counts_2017 <- data.frame(room_type, count)
+counts_2017$year <- 2017
+
+cumulative_change <- rbind(counts_2016, counts_2017)
+cumulative_change
+```
+
+```{r}
+ggplot(cumulative_change, aes(x=year, y=count, fill = room_type)) +
+  geom_bar(position="dodge", stat="identity")
+```
+
+
+
+```{r}
+df_2017
+```
+
