@@ -28,7 +28,98 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r warning=TRUE}
+```{r }
+
+
+library(dplyr)
+library(leaflet)
+library(ggthemes)
+library(ggplot2)
+library(plotly)
+library(leaflet)
+library(readr)
+library(RColorBrewer)
+library(geosphere)
+library(geojsonio)
+library(sp)
+library(htmltools)
+library("ggmap")
+library(dplyr)
+library(googleway)
+library(leaflet)
+
+
+#Automate for entire dataset
+
+data_replace_mean<- function(data){
+  for(i in 1:ncol(data)){
+  data[is.na(data[,i]), i] <- mean(data[,i], na.rm = TRUE)
+  }
+  return(data)
+}
+
+listings_col_to_keep = c("id","name","host_id","host_name","host_location","neighbourhood_cleansed","neighbourhood_group_cleansed","city","state","smart_location","latitude","longitude","property_type","room_type","accommodates","bathrooms","bedrooms","beds","price","weekly_price","monthly_price","security_deposit","cleaning_fee","review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value","reviews_per_month","host_listings_count","host_total_listings_count","calculated_host_listings_count","availability_365","number_of_reviews")  
+
+df_subset_columns <- function(df){
+  df_subset = subset(df,select=listings_col_to_keep)
+  df_subset = data_replace_mean(df_subset)
+  return(df_subset)
+}
+
+clean_data <- function(df){
+
+  df_subset = subset(df,select=listings_col_to_keep)
+  df_subset = data_replace_mean(df_subset)
+  df_subset$is_commercial = NA
+
+
+for(i in 1:nrow(df_subset)){
+  if((df_subset[i,"calculated_host_listings_count"] > 1)  &  (df_subset[i,"availability_365"]/365 < 0.3) & (df_subset[i,"review_scores_rating"]>50)){
+    df_subset[i,"is_commercial"] = "Commercial Listing"  
+  }
+  else{
+    df_subset[i,"is_commercial"] = "Household Listing"
+  }
+}
+
+df_commercial = subset(df_subset,select = c("id","is_commercial"))
+return (df_commercial)
+}
+
+listings_file_18 <- read.csv("/Users/ranjitarajeevashetty/Downloads/March_2018/listings_all.csv")
+
+
+listing_18_commercial <- clean_data(listings_file_18)
+
+
+#combined_commercial <- rbind(listing_1_commercial,listing_2_commercial)
+
+all_commercial_18 <- filter(listing_18_commercial, is_commercial=="Commercial Listing")
+
+unique_all_commercial_18 <- unique(all_commercial_18$id)
+
+all_non_commercial_18 <- filter(listing_18_commercial,(is_commercial=="Household Listing"))
+
+unique_all_non_commercial_18 <- data.frame(unique(all_non_commercial_18$id))
+
+unique_all_non_commercial_18 <- filter(unique_all_non_commercial_18, !(unique.all_non_commercial_18.id. %in% unique_all_commercial_18))
+
+unique_all_commercial_18 = data.frame(unique_all_commercial_18)
+
+unique_all_commercial_18$is_commercial <- "Commercial Listing"
+
+unique_all_non_commercial_18$is_commercial <- "Household Listing"
+
+colnames(unique_all_commercial_18) = c("id","is_commercial")
+colnames(unique_all_non_commercial_18) = c("id","is_commercial")
+
+combined_unique_listings_18 = rbind(unique_all_commercial_18,unique_all_non_commercial_18)
+#end
+
+listings_updated_18 = df_subset_columns(listings_file_18)
+
+
+total_listing = merge(listings_updated_18,combined_unique_listings_18,by="id",all.x = TRUE)#left join
 
 #sapply(var1, tolower), converting to lower
 
@@ -87,7 +178,6 @@ geo_tourist_places_list<-geocode(as.character(tourist_places_list_df$tourist_pla
 
 tourist_places_list_main<-cbind(tourist_places_list_df,geo_tourist_places_list)
 
-geocode("Columbus Circle")
 
 filter(tourist_places_list_main, tourist_places_list_main$tourist_places_list == "Columbus Circle") 
 
@@ -125,21 +215,18 @@ tourist_places_list_main<-filter(tourist_places_list_main, lat != "NA")
 tourist_places_list_main$lat<-as.numeric(tourist_places_list_main$lat)
 
 tourist_places_list_main$lon<-as.numeric(tourist_places_list_main$lon)
+tourist_places_list_main<-unique(tourist_places_list_main)
 
 #importing march data file
-Listing_March_18<-read.csv("/Users/ranjitarajeevashetty/Downloads/March_2018/listings.csv", header = TRUE)
 
 stations_list <- read.csv('/Users/ranjitarajeevashetty/Documents/R-Visualization/R Project/subway.csv', header=TRUE)
 
 
 #substr('ABC_EFG_HIG_ADF_AKF_MNB', 9, 11)
 
-
-
 stations_list$longitude<- as.numeric(substr(stations_list$the_geom, 8, 20))
 
 #stations_list$laltitude<-as.numeric(substr(stations_list$the_geom, 27, 44))
-
 
 #gsub(" .*$", "",stations_list$the_geom)
 d1<-substring(stations_list$the_geom, regexpr(" ", stations_list$the_geom) + 1)
@@ -154,19 +241,17 @@ latitude<-as.numeric(d3)
 
 stations_list_lat_long<- cbind(stations_list, latitude)
 
-Listing_March_18%>%distinct(neighbourhood_group)
 
-content<- paste("neighbourhood:", Listing_March_18$neighbourhood,"<br/>",
-                "neighbourhood_group:", Listing_March_18$neighbourhood_group,"<br/>",
-                "room_type:",Listing_March_18$room_type,"<br/>",
-                "Availability:", Listing_March_18$availability_365,"<br/>")
+
+content<- paste("neighbourhood:", total_listing$neighbourhood,"<br/>",
+                "neighbourhood_group:", total_listing$neighbourhood_group,"<br/>",
+                "room_type:",total_listing$room_type,"<br/>",
+                "Availability:", total_listing$availability_365,"<br/>")
 
 library(RColorBrewer)
-pal = colorFactor("Set1", domain = Listing_March_18$neighbourhood_group) # Grab a palette
-color_offsel1 = pal(Listing_March_18$neighbourhood_group)
+pal = colorFactor("Set1", domain = total_listing$is_commercial) # Grab a palette
+color_offsel1 = pal(total_listing$is_commercial)
 
-
-#geocode("Elegant Tightwad Shopping Tours")
 
 #adding subway image
 
@@ -175,8 +260,8 @@ NYU_Subway <- makeIcon(
   iconWidth = 25, iconHeight = 25)
 
 
-mclust<-leaflet(Listing_March_18)%>%addTiles()%>%addCircleMarkers(color = color_offsel1,popup = content,clusterOptions = markerClusterOptions(), group ="Airbnb Listing" )%>%
-  addLegend(pal=pal,values=~Listing_March_18$neighbourhood_group, title = "Neighbourhood")%>%setView(-73.9949344, 40.7179112, zoom = 11)%>%addMarkers(data= tourist_places_list_main, group = "Tourist Places",popup = paste("Tourist_place_name:",tourist_places_list_main$tourist_places_list, "<br>"))%>%addMarkers(data= stations_list_lat_long, group = "Subway Station",icon=NYU_Subway)%>%
+mclust<-leaflet(total_listing)%>%addTiles()%>%addCircleMarkers(color = color_offsel1,popup = content,clusterOptions = markerClusterOptions(), group ="Airbnb Listing" )%>%
+  addLegend(pal=pal,values=~total_listing$is_commercial, title = "colour by listing type")%>%setView(-73.9949344, 40.7179112, zoom = 11)%>%addMarkers(data= tourist_places_list_main, group = "Tourist Places",popup = paste("Tourist_place_name:",tourist_places_list_main$tourist_places_list, "<br>"))%>%addMarkers(data= stations_list_lat_long, group = "Subway Station",icon=NYU_Subway)%>%
   addProviderTiles(providers$Stamen.Toner, group = "Toner") %>%
   addProviderTiles(providers$Stamen.TonerLite, group="Toner Lite") %>%
   # Layers control
@@ -186,6 +271,64 @@ overlayGroups = c("Airbnb Listing","Tourist Places","Subway Station"),
 options = layersControlOptions(collapsed = TRUE) )%>%setView(-73.9949344, 40.7179112, zoom = 13)
 
 mclust
+#filter by Borough 
+
+
+
+# adding route between source and target
+
+#mydf <- data.frame(region = 1:48852,
+                   #from_lat = total_listing$longitude,
+                   #from_long = total_listing$latitude,
+                   #to_lat =total_listing$Nearest_tourist_long ,
+                   #to_long = total_listing$Nearest_tourist_lat)
+
+#mykey<- "AIzaSyAiercWjEbY3KeRto570WdpQUDcFTFgOns"
+
+#lapply(1:nrow(mydf), function(x){
+
+    #foo <- google_directions(origin = unlist(mydf[x, 2:3]),
+                             #destination = unlist(mydf[x, 4:5]),
+                             #key = mykey,
+                             #mode = "driving",
+                             #simplify = TRUE)
+
+   # pl <- decode_pl(foo$routes$overview_polyline$points)
+
+    #return(pl)
+#}
+   # ) %>%
+#bind_rows(.id = "region") -> temp
+
+
+#try Later
+#polylines <- lapply(1:nrow(mydf), function(x){
+
+  #foo <- google_directions(origin = unlist(mydf[x, 2:3]),
+                           #destination = unlist(mydf[x, 4:5]),
+                           #key = mykey,
+                           #mode = "driving",
+                           #simplify = TRUE)
+
+  ## no need to decode the line, just return the string as-is
+  #foo$routes$overview_polyline$points
+#}
+#)
+
+#df <- data.frame(polylines = unlist(polylines), stringsAsFactors = F)
+
+## add some colour values for the markers
+#mydf$colour_from <- "red"
+#mydf$colour_to <- "blue"
+
+## plot the polylines and the markers
+#google_map(key = mapKey) %>%
+  #add_markers(data = mydf, lat = "from_lat", lon = "from_long", colour = "colour_from") %>%
+  #add_markers(data = mydf, lat = "to_lat", lon = "to_long", colour = "colour_to") %>%
+  #add_polylines(data = df, polyline = "polylines")
+
+
+#unique(total_listing$room_type)
 
 
 
@@ -198,27 +341,235 @@ mclust
 
 
 
+```
+
+```{r }
+
+#install.packages("googleway")
+
+mat <- distm(total_listing[,c('longitude','latitude')], tourist_places_list_main[,c('lon','lat')], fun=distVincentyEllipsoid)
+
+
+total_listing$Tourist_place <- (tourist_places_list_main$tourist_places_list)[max.col(-mat)]
+total_listing$Nearest_tourist_long<- (tourist_places_list_main$lon)[max.col(-mat)]
+total_listing$Nearest_tourist_lat<- (tourist_places_list_main$lat)[max.col(-mat)]
+
+total_listing$Min_distance<- apply(mat, 1, min)#apply min function to the matrix per row
+
+
+#closest 5
+
+#head(order(mat[-1,1]),5)+1
+
+
+#head(order(mat[1,1]),5)
+#mat[1,3]
+#mat2=t(apply(mat,1,sort))
+
+#hex
+
+#install.packages("hexbin")
+
+#library(hexbin)
+
+#x=rnorm(total_listing$price)
+#y=rnorm(total_listing$Min_distance)
+#bin<- hexbin(x,y,xbins = 10)
+#plot(bin,main="asd")
+
+
+#typeof(total_listing$price)
+#unique(total_listing$Tourist_place)
+#bar plot
+
+tourist_places_8<-total_listing%>%group_by(total_listing$Tourist_place, total_listing$is_commercial)%>%summarise(count=n())
+
+top_places<-c('barclays center',
+'Brooklyn Bridge',
+'coney island',
+'Empire State Building',
+'Columbus Circle',
+'Rockefeller Center',
+'one world observatory',
+'United Nations Headquarters')
+
+top_places_df<-as.data.frame(top_places)
+
+
+#factor(top_places)
+
+
+names(tourist_places_8)[1]<-"Top_tourist_places"
+
+names(tourist_places_8)[2]<-"is_commercial"
+#inner join to filer, merge
+
+top_places_filtrd<-merge(tourist_places_8,top_places_df, by.x= "Top_tourist_places" , by.y = "top_places")
+
+#tourist_places_8%>%filter(tourist_places_8$Top_tourist_places %in% top_places)
+
+
+tourist_places_8$Top_tourist_places<-as.factor(tourist_places_8$Top_tourist_places)
+
+#which tourist place has maximum no of nearest airbnb listing.
+
+#tourist_top<-head(tourist_places_8,40)
+
+#tourist_places_8[order(-tourist_places_8$count),]
+
+#filter(tourist_places_8,as.character(tourist_places_8$Top_tourist_places)=="Rockefeller Center" )
+
+#typeof(tourist_places_8)
+
+names(top_places_filtrd)[2]<-"Type_of_Listing"
+
+plot2<-ggplot(top_places_filtrd, aes(x=reorder(top_places_filtrd$Top_tourist_places,-count), y =top_places_filtrd$count, fill = Type_of_Listing)) + geom_text(data= top_places_filtrd, mapping = aes(x=reorder(top_places_filtrd$Top_tourist_places,-count), y =top_places_filtrd$count, fill = top_places_filtrd$Type_of_Listing, label=top_places_filtrd$count) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
+  geom_bar(stat="identity", position = "dodge") +  scale_fill_brewer(palette = "Set1")+labs(subtitle="Tourist place with maximum no of nearest airbnb listing", 
+       y="Cont of listing", 
+       x="Tourist Places") +theme(axis.text.x = element_text(angle=90, vjust=0.6))
+
+plot2
+
+```
+
+```{r }
+
+#cost variation with tourist palce
+
+total_listing$price <- gsub("[$|,]", "", total_listing$price)
+
+total_listing$price <- as.numeric(total_listing$price)
+
+#cost_airbnb_tourist <-total_listing%>%group_by(Tourist_place)%>%summarise_at()
+
+cost_airbnb_tourist<-aggregate(total_listing[,19],list(total_listing$Tourist_place,total_listing$room_type), mean)
+
+names(cost_airbnb_tourist)[1]<-"Tourist_place"
+
+names(cost_airbnb_tourist)[2]<-"Room_Type"
+
+names(cost_airbnb_tourist)[3]<-"Avg_Price"
+
+cost_airbnb_tourist_10<-head(cost_airbnb_tourist)
+
+top_places_filtrd_cost<-merge(cost_airbnb_tourist,top_places_df, by.x= "Tourist_place" , by.y = "top_places")
+
+
+plot3<-ggplot(data= top_places_filtrd_cost)+ geom_bar(mapping = aes(x = reorder(Tourist_place,-Avg_Price), y = Avg_Price,fill=Room_Type), stat = "identity",position=position_dodge())+geom_text(data= top_places_filtrd_cost, mapping = aes(x=top_places_filtrd_cost$Tourist_place, y =round(top_places_filtrd_cost$Avg_Price,2), fill = top_places_filtrd_cost$Room_Type, label=round(top_places_filtrd_cost$Avg_Price)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
+labs(title= "cost variation with tourist palce", x= "Tourist_place", y = 'Price') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
+
+plot3
+
+```
+
+```{r }
+
+cost_airbnb_tourist<-aggregate(total_listing[,19],list(total_listing$Tourist_place,total_listing$room_type,total_listing$is_commercial), mean)
 
 
 
+names(cost_airbnb_tourist)[1]<-"Tourist_place"
+
+names(cost_airbnb_tourist)[2]<-"Room_Type"
+
+names(cost_airbnb_tourist)[3]<-"Listing_Type"
+
+names(cost_airbnb_tourist)[4]<-"Avg_Price"
+
+cost_airbnb_tourist_non_com<-cost_airbnb_tourist%>%filter(cost_airbnb_tourist$Listing_Type=="Household Listing")
+
+cost_airbnb_tourist_com<-cost_airbnb_tourist%>%filter(cost_airbnb_tourist$Listing_Type=="Commercial Listing")
+
+#cost_airbnb_tourist_10<-head(cost_airbnb_tourist_com)
+
+top_places_filtrd_cost_com<-merge(cost_airbnb_tourist_com,top_places_df, by.x= "Tourist_place" , by.y = "top_places")
+
+top_places_filtrd_cost_non_com<-merge(cost_airbnb_tourist_non_com,top_places_df, by.x= "Tourist_place" , by.y = "top_places")
+
+
+plot3_com<-ggplot(data= top_places_filtrd_cost_com)+ geom_bar(mapping = aes(x = reorder(Tourist_place,-Avg_Price), y = Avg_Price,fill=Room_Type), stat = "identity",position=position_dodge())+geom_text(data= top_places_filtrd_cost_com, mapping = aes(x=top_places_filtrd_cost_com$Tourist_place, y =round(top_places_filtrd_cost_com$Avg_Price,2), fill = top_places_filtrd_cost_com$Room_Type, label=round(top_places_filtrd_cost_com$Avg_Price)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
+labs(title= "Airbnb Commercial Listing Cost variation with Tourist palce", x= "Tourist_place", y = 'Price') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
 
 
 
+plot3_non_com<-ggplot(data= top_places_filtrd_cost_non_com)+ geom_bar(mapping = aes(x = reorder(Tourist_place,-Avg_Price), y = Avg_Price,fill=Room_Type), stat = "identity",position=position_dodge())+geom_text(data= top_places_filtrd_cost_non_com, mapping = aes(x=top_places_filtrd_cost_non_com$Tourist_place, y =round(top_places_filtrd_cost_non_com$Avg_Price,2), fill = top_places_filtrd_cost_non_com$Room_Type, label=round(top_places_filtrd_cost_non_com$Avg_Price)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
+labs(title= "Airbnb Non Commercial Listing Cost variation with Tourist palce", x= "Tourist_place", y = 'Price') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
 
+plot3_com
 
-
+plot3_non_com
 ```
 
 ```{r}
+#min distance for commercial
+total_listing_com<-total_listing%>%filter(total_listing$is_commercial=="Commercial Listing")
+
+mat_com <- distm(total_listing_com[,c('longitude','latitude')], tourist_places_list_main[,c('lon','lat')], fun=distVincentyEllipsoid)
+
+
+total_listing_com$Tourist_place <- (tourist_places_list_main$tourist_places_list)[max.col(-mat_com)]
+total_listing_com$Nearest_tourist_long<- (tourist_places_list_main$lon)[max.col(-mat_com)]
+total_listing_com$Nearest_tourist_lat<- (tourist_places_list_main$lat)[max.col(-mat_com)]
+
+total_listing_com$Min_distance<- apply(mat_com, 1, min)#apply min function to the matrix per row
+
+total_listing_com_newdf<-total_listing_com[,c("id","name","Tourist_place","Min_distance","is_commercial")]
+
+#names(total_listing_com_newdf)[1]<-"non_com_id"
+
+#names(total_listing_com_newdf)[2]<-"non_com_name"
+
+#names(total_listing_com_newdf)[4]<-"non_com_Min_distance"
+
+#min distance for non commercial
+total_listing_noncom<-total_listing%>%filter(total_listing$is_commercial=="Household Listing")
+
+mat_noncom <- distm(total_listing_noncom[,c('longitude','latitude')], tourist_places_list_main[,c('lon','lat')], fun=distVincentyEllipsoid)
+
+total_listing_noncom$Tourist_place <- (tourist_places_list_main$tourist_places_list)[max.col(-mat_noncom)]
+total_listing_noncom$Nearest_tourist_long<- (tourist_places_list_main$lon)[max.col(-mat_noncom)]
+total_listing_noncom$Nearest_tourist_lat<- (tourist_places_list_main$lat)[max.col(-mat_noncom)]
+
+total_listing_noncom$Min_distance<- apply(mat_noncom, 1, min)#apply min function to the matrix per row
+
+total_listing_noncom_newdf<-total_listing_noncom[,c("id","name","Tourist_place","Min_distance","is_commercial")]
+
+
+total_listing_min_dist<-rbind(total_listing_com_newdf,total_listing_noncom_newdf)
+
+#merge(total_listing_com_newdf,total_listing_noncom_newdf,by="Tourist_place")
+
+#merge(total_listing_min_dist,tourist_places_list_main,by.x=Tourist_place,by.y=Tourist_place)
+
+total_listing_min_dist_df<-aggregate(total_listing_min_dist[,4],list(total_listing_min_dist$Tourist_place,total_listing_min_dist$is_commercial), min)
+
+names(total_listing_min_dist_df)[1]<-"Tourist_Place"
+
+names(total_listing_min_dist_df)[2]<-"Listing_Type"
+
+names(total_listing_min_dist_df)[3]<-"Minimum_Distance"
+
+total_listing_min_dist_df_mg<-merge(total_listing_min_dist_df,top_places_df,by.x="Tourist_Place",by.y="top_places")
+
+plot4<-ggplot(data= total_listing_min_dist_df_mg)+ geom_bar(mapping = aes(x = reorder(Tourist_Place,-Minimum_Distance), y = Minimum_Distance,fill=Listing_Type), stat = "identity",position=position_dodge())+geom_text(data= total_listing_min_dist_df_mg, mapping = aes(x=total_listing_min_dist_df_mg$Tourist_Place, y =round(total_listing_min_dist_df_mg$Minimum_Distance,2), fill = total_listing_min_dist_df_mg$Listing_Type, label=round(total_listing_min_dist_df_mg$Minimum_Distance)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
+labs(title= "Nearest Airbnb to the tourist place", x= "Tourist_place", y = 'Nearest Distnace') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
+
+plot4
+
+#commercial is closer dan household
+
 
 ```
+
+
+
+
+
 
 ## Including Plots
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
