@@ -66,11 +66,6 @@ df_2017 <- rbindlist(list(January_2017,February_2017,March_2017,April_2017,May_2
 
 ```
 
-```{r}
-setkey(df_2016, "id")
-unique(df_2016, by=)
-df_2016
-```
 
 
 ```{r}
