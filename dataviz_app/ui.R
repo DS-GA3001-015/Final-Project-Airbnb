@@ -4,18 +4,13 @@ library(leaflet)
 shinyUI(fluidPage(
   tags$head(includeCSS("styles.css")),
   # Our fullscreen part of the UI for the map
-  fixedPanel(id = "fullscreen",
-             top = 0, left = 0, 
-             width = "100%", height = "100%", 
-             # Here is the map output in the UI
-             leafletOutput("nymap", 
-                           width = "100%", height = "100%")
+  
+  mainPanel(# Here is the map output in the UI
+             leafletOutput("nymap", height=1000)
   ), 
   # And the tabbed part with the inputs and plot
-  absolutePanel(id = "controls", 
+  sidebarPanel(id = "controls", 
                 draggable = TRUE, 
-                top = 30, left = 50, 
-                width = 400, height = "auto",
                 h4("AirBnB Listings"),
                 selectInput("month", label = "Month", 
                             choices = c("January","February","March","April","May","June","July","August","September","October","November","December"), 
