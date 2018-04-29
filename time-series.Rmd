@@ -1,0 +1,113 @@
+---
+title: "Time-series"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+```{r}
+January_2016 <- as.data.frame(fread("data/2016_January_listings.csv", select = c("id","room_type")))
+January_2016$month <- "2016-01-1"
+February_2016 <- as.data.frame(fread("data/2016_February_listings.csv", select = c("id","room_type")))
+February_2016$month <- "2016-02-1"
+March_2016 <- as.data.frame(fread("data/2016_March_listings.csv", select = c("id","room_type")))
+March_2016$month <- "2016-03-1"
+April_2016 <- as.data.frame(fread("data/2016_April_listings.csv", select = c("id","room_type")))
+April_2016$month <- "2016-04-1"
+May_2016 <- as.data.frame(fread("data/2016_May_listings.csv", select = c("id","room_type")))
+May_2016$month <- "2016-05-1"
+June_2016 <- as.data.frame(fread("data/2016_June_listings.csv", select = c("id","room_type")))
+June_2016$month <- "2016-06-1"
+July_2016 <- as.data.frame(fread("data/2016_July_listings.csv", select = c("id","room_type")))
+July_2016$month <- "2016-07-1"
+August_2016 <- as.data.frame(fread("data/2016_August_listings.csv", select = c("id","room_type")))
+August_2016$month <- "2016-08-1"
+September_2016 <- as.data.frame(fread("data/2016_September_listings.csv", select = c("id","room_type")))
+September_2016$month <- "2016-09-1"
+October_2016 <- as.data.frame(fread("data/2016_October_listings.csv", select = c("id","room_type")))
+October_2016$month <- "2016-10-1"
+November_2016 <- as.data.frame(fread("data/2016_November_listings.csv", select = c("id","room_type")))
+November_2016$month <- "2016-11-1"
+December_2016 <- as.data.frame(fread("data/2016_December_listings.csv", select = c("id","room_type")))
+December_2016$month <- "2016-12-1"
+
+
+df_2016 <- rbindlist(list(January_2016,February_2016,March_2016,April_2016,May_2016,June_2016,July_2016,August_2016,September_2016, October_2016,November_2016, December_2016))
+
+January_2017 <- as.data.frame(fread("data/2017_January_listings.csv", select = c("id","room_type")))
+January_2017$month <- "2017-01-1"
+February_2017 <- as.data.frame(fread("data/2017_February_listings.csv", select = c("id","room_type")))
+February_2017$month <- "2017-02-1"
+March_2017 <- as.data.frame(fread("data/2017_March_listings.csv", select = c("id","room_type")))
+March_2017$month <- "2017-03-1"
+April_2017 <- as.data.frame(fread("data/2017_April_listings.csv", select = c("id","room_type")))
+April_2017$month <- "2017-04-1"
+May_2017 <- as.data.frame(fread("data/2017_May_listings.csv", select = c("id","room_type")))
+May_2017$month <- "2017-05-1"
+June_2017 <- as.data.frame(fread("data/2017_June_listings.csv", select = c("id","room_type")))
+June_2017$month <- "2017-06-1"
+July_2017 <- as.data.frame(fread("data/2017_July_listings.csv", select = c("id","room_type")))
+July_2017$month <- "2017-07-1"
+August_2017 <- as.data.frame(fread("data/2017_August_listings.csv", select = c("id","room_type")))
+August_2017$month <- "2017-08-1"
+September_2017 <- as.data.frame(fread("data/2017_September_listings.csv", select = c("id","room_type")))
+September_2017$month <- "2017-09-1"
+October_2017 <- as.data.frame(fread("data/2017_October_listings.csv", select = c("id","room_type")))
+October_2017$month <- "2017-10-1"
+November_2017 <- as.data.frame(fread("data/2017_November_listings.csv", select = c("id","room_type")))
+November_2017$month <- "2017-11-1"
+December_2017 <- as.data.frame(fread("data/2017_December_listings.csv", select = c("id","room_type")))
+December_2017$month <- "2017-12-1"
+
+df_2017 <- rbindlist(list(January_2017,February_2017,March_2017,April_2017,May_2017,June_2017,July_2017,August_2017,September_2017, October_2017,November_2017, December_2017))
+
+```
+
+```{r}
+setkey(df_2016, "id")
+unique(df_2016, by=)
+df_2016
+```
+
+
+```{r}
+monthly_2016 = summarise(group_by(df_2016,room_type,month),count=n())
+monthly_2017 = summarise(group_by(df_2017,room_type,month),count=n())
+```
+
+
+
+```{r}
+monthly_2016$month <- as.Date(monthly_2016$month, "%Y-%m-%d")
+monthly_2017$month <- as.Date(monthly_2017$month, "%Y-%m-%d")
+```
+
+
+```{r}
+entire_home_2016 <- filter(monthly_2016, room_type=="Entire home/apt")
+private_room_2016 <- filter(monthly_2016, room_type=="Private room")
+shared_room_2016 <- filter(monthly_2016, room_type=="Shared room")
+
+entire_home_2017 <- filter(monthly_2017, room_type=="Entire home/apt")
+private_room_2017 <- filter(monthly_2017, room_type=="Private room")
+shared_room_2017 <- filter(monthly_2017, room_type=="Shared room")
+
+entire_home <- rbind(entire_home_2016, entire_home_2017)
+private_room <- rbind(private_room_2016, private_room_2017)
+shared_room <- rbind(shared_room_2016, shared_room_2017)
+```
+
+```{r}
+
+data <- data.frame(entire_home$month, entire_home$count, private_room$count, shared_room$count)
+
+p <- plot_ly(data, x = ~entire_home$month, y = ~entire_home$count, type = 'scatter', mode="lines+markers", name = 'Entire Home', text=entire_home$month) %>% 
+  add_trace(y = ~private_room$count, name = 'Private room', mode = 'lines+markers', text=entire_home$month) %>% 
+  add_trace(y = ~shared_room$count, name = 'Shared room', mode = 'lines+markers', text=entire_home$month) 
+p
+
+```
+
