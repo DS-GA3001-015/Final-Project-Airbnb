@@ -3,6 +3,8 @@ library(leaflet)
 library(sp)
 library(data.table)
 library(zoo)
+library(geojsonio)
+library(geojson)
 
 shinyServer(function(input, output, session) {
   #t1=proc.time()
@@ -15,7 +17,7 @@ shinyServer(function(input, output, session) {
   
   
   data_replace_mean<- function(data){
-    numeric_col = c("price","calculated_host_listings_count","availability_365",
+    numeric_col = c("price","calculated_host_listings_count","availability_365","availability_30",
                     "review_scores_rating","review_scores_accuracy","review_scores_cleanliness","review_scores_checkin",
                     "review_scores_communication","review_scores_location","review_scores_value","availability_30")
     
@@ -27,7 +29,7 @@ shinyServer(function(input, output, session) {
     data$is_commercial <- NA
     
     # for(i in 1:nrow(data)){
-    #   if((data[i,"calculated_host_listings_count"] > 1)  &  (data[i,"availability_365"]/365 < 0.3) & 
+    #   if((data[i,"calculated_host_listings_count"] > 1)  &  (data[i,"availability_30"]/30 < 0.3) & 
     #      (data[i,"review_scores_rating"]>50)){
     #         data[i,"is_commercial"] = "Commercial Listing"  
     #   }
@@ -39,18 +41,20 @@ shinyServer(function(input, output, session) {
     data$is_commercial = ifelse(((data$calculated_host_listings_count > 1)  &  (data$availability_365 / 365 < 0.3) & 
                                   (data$review_scores_rating > 50)),"Commercial Listing","Household Listing")
     
-    #print("ROWS")
-    #temp1 = subset(data,is_commercial=="Commercial Listing")
-    #print(nrow(temp1))
+    print("ROWS")
+    temp1 = subset(data,is_commercial=="Commercial Listing")
+    print(nrow(temp1))
     
-    #temp2 = subset(data,is_commercial=="Household Listing")
-    #print(nrow(temp2))
+    temp2 = subset(data,is_commercial=="Household Listing")
+    print(nrow(temp2))
     return(data)
   }
   
   file_change <- reactive({
     
-    file_to_read <- paste("../data/",as.character(input$year),"_",as.character(input$month),"_listings.csv",sep="")
+    wd=getwd()
+    #print(wd)
+    file_to_read <- paste("../all Listing Data/",as.character(input$year),"_",as.character(input$month),"_listings.csv",sep="")
     # col_keep <- c("character","NULL","NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL",
     #               "NULL","NULL","NULL","NULL","character","NULL","character","NULL","NULL","NULL","NULL","NULL",
     #               "NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL",
@@ -122,11 +126,11 @@ shinyServer(function(input, output, session) {
     }
     else if(input$in_radio=="CL"){
       df_subs = subset(df,is_commercial=="Commercial Listing")
-      #print(nrow(df_subs))
+      print(nrow(df_subs))
       }
     else if(input$in_radio=="HL"){
       df_subs = subset(df,is_commercial=="Household Listing")
-      #print(nrow(df_subs))
+      print(nrow(df_subs))
       }
     
     #print("second call first")
@@ -143,9 +147,9 @@ shinyServer(function(input, output, session) {
     
     neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
     neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
-    
-    airbnb_neighbourhoods <- geojsonio::geojson_read("../data/neighbourhoods.geojson", what = "sp")
+    airbnb_neighbourhoods <- geojsonio::geojson_read("../all Listing Data/neighbourhoods.geojson", what = "sp")
     pal <- colorNumeric("viridis", NULL)
+    
     airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
     #print(class(airbnb_neighbourhoods))
     
@@ -154,27 +158,27 @@ shinyServer(function(input, output, session) {
     
     if(input$radio=="score"){
       #print("SCORE")
-      map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
+      map <- leafletProxy(mapId = "nymap", session = session,data= airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
-        addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(airbnb_neighbourhoods$avg_score)) %>%
-        leaflet::addLegend(pal = pal, values = ~(airbnb_neighbourhoods$avg_score), opacity = 1.0)
+        addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_score)) %>%
+        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_score, opacity = 1.0)
     }
     else if(input$radio=="review"){
       #print("REVIEW")
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
-        addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(airbnb_neighbourhoods$avg_review)) %>%
-        leaflet::addLegend(pal = pal, values = ~(airbnb_neighbourhoods$avg_review), opacity = 1.0)
+        addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_review)) %>%
+        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_review, opacity = 1.0)
     }
     else if(input$radio=="cost"){
       #print("COST")
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
-        addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(airbnb_neighbourhoods$avg_cost)) %>%
-        leaflet::addLegend(pal = pal, values = ~(airbnb_neighbourhoods$avg_cost), opacity = 1.0)
+        addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_cost)) %>%
+        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_cost, opacity = 1.0)
     }
   })
   
@@ -194,7 +198,9 @@ shinyServer(function(input, output, session) {
       i = file_read_short[v$count_button]
       #print(v$count_button)
       #print(i)
-      file_to_read <- paste("../data/",as.character(i),"_listings.csv",sep="")
+      wd=getwd()
+      
+      file_to_read <- paste("../all Listing Data/",as.character(i),"_listings.csv",sep="")
       listings_col_to_keep = c("id","name","host_id","host_name","neighbourhood_cleansed",
                                "neighbourhood_group_cleansed","city","state","smart_location","latitude","longitude",
                                "property_type","room_type","bathrooms","bedrooms","price","review_scores_rating",
@@ -205,18 +211,18 @@ shinyServer(function(input, output, session) {
                                "number_of_reviews","summary")
       read_df = data.table::fread(file_to_read,select = listings_col_to_keep )
       read_df = as.data.frame(read_df)
-      read_df = subset(read_df,property_type=="Apartment")
+      #read_df = subset(read_df,property_type=="Apartment")
       #read_df = head(read_df,n=100)
       #print(nrow(read_df))
       pal = colorFactor("Set1", domain = read_df$room_type) # Grab a palette
       color_pts = pal(read_df$room_type)
       #t1=proc.time()
-      map1 <- leafletProxy(mapId = "nymap", session = session) %>%
+      map <- leafletProxy(mapId = "nymap", session = session) %>%
               clearShapes()%>%
               clearControls()%>%
               addCircles(lat = read_df$latitude,lng = read_df$longitude,color=color_pts) %>%
               addLegend(pal = pal, values = read_df$room_type)
-      map1
+      map
       
       #print(proc.time()-t1)
     #}
