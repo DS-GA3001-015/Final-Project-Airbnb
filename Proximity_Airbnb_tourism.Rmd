@@ -919,11 +919,14 @@ names(Combined_occupancy_airbnb)[4]<-"Rental_Occupancy_Rate"
   
 # plotly
 
+names(Combined_rental_airbnb)[2]<-"Time_Period"
+
 
 #time vs price
 plot_ly(Combined_rental_airbnb, x = ~Time_Period , y = ~Airbnb_Prices, name='Airbnb',type = 'scatter', mode='lines',
               color = ~Boro)%>%add_trace(y=~Rental_Prices, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Median Price"))
 
+Combined_occupancy_airbnb
 #ime vs Occupancy
 plot_ly(Combined_occupancy_airbnb, x = ~Time_Period , y = ~Airbnb_Occupancy_Rate, name='Airbnb',type = 'scatter', mode='lines',
               color = ~Boro)%>%add_trace(y=~Rental_Occupancy_Rate, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Occupancy Rate"))
