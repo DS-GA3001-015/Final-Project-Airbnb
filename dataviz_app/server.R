@@ -41,12 +41,12 @@ shinyServer(function(input, output, session) {
     data$is_commercial = ifelse(((data$calculated_host_listings_count > 1)  &  (data$availability_365 / 365 < 0.3) & 
                                   (data$review_scores_rating > 50)),"Commercial Listing","Household Listing")
     
-    print("ROWS")
-    temp1 = subset(data,is_commercial=="Commercial Listing")
-    print(nrow(temp1))
+    #print("ROWS")
+    #temp1 = subset(data,is_commercial=="Commercial Listing")
+    #rint(nrow(temp1))
     
-    temp2 = subset(data,is_commercial=="Household Listing")
-    print(nrow(temp2))
+    #temp2 = subset(data,is_commercial=="Household Listing")
+    #print(nrow(temp2))
     return(data)
   }
   
@@ -102,17 +102,41 @@ shinyServer(function(input, output, session) {
     return(df)
   })
   
+  
   observeInputs <- observeEvent(input$submit,{
     df = file_change()
     #print(input$price)
+    #print(input$click)
     #print("1st function call")
     #print(proc.time()-t1)
+    relative_hosts = data.table::fread("../all Listing Data/relative_hosts.csv")
+    if(input$year==2016){
+      relative_hosts = subset(relative_hosts,select=c("host_id","sum_2016"))
+    }
+    else{
+      relative_hosts = subset(relative_hosts,select=c("host_id","sum_2017"))
+    }
+    colnames(relative_hosts) = c("host_id","sum_listings")
+    if(input$click==TRUE)
+    relative_hosts = subset(relative_hosts,sum_listings>1)
+    
+    
+    df = base::merge(df,relative_hosts,by="host_id")
+    
+    
     df_subset = subset(df,(df$price > input$price) & (df$review_scores_rating > input$quality) & 
                          (df$bedrooms > input$bedrooms) & (df$bathrooms > input$bathrooms) )
+    print(nrow(df_subset))
+    host_info <- paste("Host Id:",df$host_id,"<br/>",
+                                         "Host Name:",df$host_name,"<br/>",
+                                         "Host has ",df$sum_listings,"other listings.","<br/>"
+                                         )
+    
     map <- leafletProxy("nymap", session) %>%
       clearShapes() %>%
       clearControls() %>%
-      addCircles(lng = df_subset$longitude,lat = df_subset$latitude)
+      clearGroup(group = c("2016","2017"))%>%
+      addCircles(lng = df_subset$longitude,lat = df_subset$latitude,popup = host_info)
     #print(proc.time()-t1)
   })
   
@@ -161,6 +185,7 @@ shinyServer(function(input, output, session) {
       map <- leafletProxy(mapId = "nymap", session = session,data= airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
+        clearGroup(group = c("2016","2017"))%>%
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_score)) %>%
         leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_score, opacity = 1.0)
     }
@@ -169,6 +194,7 @@ shinyServer(function(input, output, session) {
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
+        clearGroup(group = c("2016","2017"))%>%
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_review)) %>%
         leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_review, opacity = 1.0)
     }
@@ -177,12 +203,15 @@ shinyServer(function(input, output, session) {
       map <- leafletProxy(mapId = "nymap", session = session,data = airbnb_neighbourhoods) %>%
         clearShapes() %>%
         clearControls() %>% 
+        clearGroup(group = c("2016","2017"))%>%
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_cost)) %>%
         leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_cost, opacity = 1.0)
     }
   })
   
   v <- reactiveValues(count_button = 0)
+  
+  month_val <- reactiveValues(cur_month = "")
   
   observeEvent(input$submit3,{
     
@@ -199,7 +228,10 @@ shinyServer(function(input, output, session) {
       #print(v$count_button)
       #print(i)
       wd=getwd()
+      month_val$cur_month = isolate(as.character(i))
       
+      #print(month_val$cur_month)
+      #print("DONE")
       file_to_read <- paste("../all Listing Data/",as.character(i),"_listings.csv",sep="")
       listings_col_to_keep = c("id","name","host_id","host_name","neighbourhood_cleansed",
                                "neighbourhood_group_cleansed","city","state","smart_location","latitude","longitude",
@@ -220,8 +252,9 @@ shinyServer(function(input, output, session) {
       map <- leafletProxy(mapId = "nymap", session = session) %>%
               clearShapes()%>%
               clearControls()%>%
+              clearGroup(group = c("2016","2017"))%>%
               addCircles(lat = read_df$latitude,lng = read_df$longitude,color=color_pts) %>%
-              addLegend(pal = pal, values = read_df$room_type)
+              addLegend(pal = pal, values = read_df$room_type,title = month_val$cur_month)
       map
       
       #print(proc.time()-t1)
@@ -231,24 +264,33 @@ shinyServer(function(input, output, session) {
   observeEvent(input$submit4,{
     name = input$multiple
     keyid = as.numeric(unlist(strsplit(name,"-"))[1])
-    print(keyid)
+    #print(keyid)
     multiple = data.table::fread("../all Listing Data/total_multiple.csv")
     multiple = as.data.frame(multiple)
-    mul_16 = subset(multiple,(host_id == keyid) & (year==2016) & (room_type=="Entire home/apt"))
-    mul_17 = subset(multiple,(host_id == keyid) & (year==2017) & (room_type=="Entire home/apt"))
+    mul_16 = subset(multiple,(host_id == keyid) & (year==2016))
+    mul_17 = subset(multiple,(host_id == keyid) & (year==2017))
     
-    print(nrow(mul_16))
-    print(nrow(mul_17))
+    #print(nrow(mul_16))
+    #print(nrow(mul_17))
+    
+    pal = colorFactor("Set1", domain = mul_16$room_type) # Grab a palette
+    color_room = pal(mul_16$room_type)
     
     map <- leafletProxy(mapId = "nymap", session = session) %>%
       setView(lng = -73.7856491, lat = 40.7022541, zoom = 10) %>%
       clearShapes()%>%
       clearControls()%>%
-      addAwesomeMarkers(data =mul_16,group = "2016") %>%
-      addAwesomeMarkers(data =mul_17, group = "2017") %>%
-      addLayersControl(overlayGroups = c("2016","2017"))
+      clearMarkers()%>%
+      clearGroup(group = c("2016","2017"))%>%
+      addCircles(data =mul_16,group = "2016",color=color_room) %>%
+      addCircles(data =mul_17, group = "2017",color=color_room) %>%
+      addLayersControl(overlayGroups = c("2016","2017")) %>%
+      addLegend(pal=pal,values = mul_16$room_type)
     
     map
   })
+  
+  #output$current_month = renderText({print(month_val$cur_month)
+  # month_val$cur_month})
   
 })

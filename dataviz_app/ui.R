@@ -4,8 +4,8 @@ library(data.table)
 
 total_multiple = data.table::fread("../all Listing Data/total_multiple.csv")
 total_multiple = as.data.frame(total_multiple)
-total_multiple = total_multiple[order(-total_multiple$entire_home_apt),]
-names = unique(total_multiple[1:1094,"pk"])
+total_multiple = total_multiple[order(-total_multiple$sum_total),]
+names = unique(total_multiple[1:2094,"pk"])
 
 shinyUI(fluidPage(
   tags$head(includeCSS("styles.css")),
@@ -45,6 +45,7 @@ shinyUI(fluidPage(
                                         value = 1, 
                                         min = 0, 
                                         max = 20),
+                           checkboxInput('click',"Multiple Listings",value=FALSE),
                           
                            actionButton('submit','Submit')),
                   tabPanel("AirBnB Insights",
@@ -71,7 +72,8 @@ shinyUI(fluidPage(
                            ),
                   tabPanel("Trend Over the Years",
                            
-                           actionButton('submit3','click'))
+                           actionButton('submit3','click to view next month'))
+                           
                   )),
   
   mainPanel(# Here is the map output in the UI
