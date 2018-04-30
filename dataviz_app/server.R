@@ -11,7 +11,7 @@ shinyServer(function(input, output, session) {
   output$nymap <- renderLeaflet({
     map <- leaflet() %>%
       addTiles("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png") %>%
-      setView(lng = -74.0156491, lat = 40.7022541, zoom = 10)
+      setView(lng = -73.7856491, lat = 40.7022541, zoom = 10)
     map
   })
   
@@ -226,6 +226,29 @@ shinyServer(function(input, output, session) {
       
       #print(proc.time()-t1)
     #}
+  })
+  
+  observeEvent(input$submit4,{
+    name = input$multiple
+    keyid = as.numeric(unlist(strsplit(name,"-"))[1])
+    print(keyid)
+    multiple = data.table::fread("../all Listing Data/total_multiple.csv")
+    multiple = as.data.frame(multiple)
+    mul_16 = subset(multiple,(host_id == keyid) & (year==2016) & (room_type=="Entire home/apt"))
+    mul_17 = subset(multiple,(host_id == keyid) & (year==2017) & (room_type=="Entire home/apt"))
+    
+    print(nrow(mul_16))
+    print(nrow(mul_17))
+    
+    map <- leafletProxy(mapId = "nymap", session = session) %>%
+      setView(lng = -73.7856491, lat = 40.7022541, zoom = 10) %>%
+      clearShapes()%>%
+      clearControls()%>%
+      addAwesomeMarkers(data =mul_16,group = "2016") %>%
+      addAwesomeMarkers(data =mul_17, group = "2017") %>%
+      addLayersControl(overlayGroups = c("2016","2017"))
+    
+    map
   })
   
 })

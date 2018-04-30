@@ -1,15 +1,18 @@
 library(shiny)
 library(leaflet)
+library(data.table)
+
+total_multiple = data.table::fread("../all Listing Data/total_multiple.csv")
+total_multiple = as.data.frame(total_multiple)
+total_multiple = total_multiple[order(-total_multiple$entire_home_apt),]
+names = unique(total_multiple[1:1094,"pk"])
 
 shinyUI(fluidPage(
   tags$head(includeCSS("styles.css")),
   # Our fullscreen part of the UI for the map
-  
-  mainPanel(# Here is the map output in the UI
-             leafletOutput("nymap", height=1000)
-  ), 
   # And the tabbed part with the inputs and plot
-  sidebarPanel(id = "controls", 
+  sidebarLayout(
+  sidebarPanel(id = "controls",
                 draggable = TRUE, 
                 h4("AirBnB Listings"),
                 selectInput("month", label = "Month", 
@@ -60,9 +63,17 @@ shinyUI(fluidPage(
                            actionButton('submit2','Submit')
                            
                            ),
+                  tabPanel("Location of Multiple Listings",
+                           selectInput("multiple", label = "Select Owner", 
+                                       choices = names, 
+                                       selected = "Kara"),
+                           actionButton('submit4','click')
+                           ),
                   tabPanel("Trend Over the Years",
                            
-                           actionButton('submit3','click')))
-                
-                
+                           actionButton('submit3','click'))
+                  )),
+  
+  mainPanel(# Here is the map output in the UI
+    leafletOutput("nymap", height=500)),fluid = TRUE
   )))
