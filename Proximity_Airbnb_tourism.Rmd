@@ -556,9 +556,383 @@ labs(title= "Nearest Airbnb to the tourist place", x= "Tourist_place", y = 'Near
 
 plot4
 
-#commercial is closer dan household
+#Non commercial is closer dan household
 
 
+
+
+```
+
+
+```{r}
+
+
+
+Rental_Listing <- read.csv("/Users/ranjitarajeevashetty/Documents/R-Visualization/R Project/Rental_LIstings.csv",stringsAsFactors = FALSE
+)
+
+#Rental_Listing<-Rental_Listing[!is.na(Rental_Listing[,3:])]
+
+#Rental_Listing[!is.na(Rental_Listing$X2015.01), ]
+
+Rental_Listing_gp <- na.omit(Rental_Listing)
+
+
+#Rental_Listing_gp<-Rental_Listing %>%group_by(Rental_Listing$Boro)%>%summarize_(mean_price=summarise_all())
+
+
+
+#Rental_Listing_gp_flt%>%select(Boro,X2015.01)
+
+#
+
+Rental_Listing_gp<-Rental_Listing_gp %>% group_by(Rental_Listing_gp$Boro) %>% 
+  summarise_at(.vars = vars( X2016.01,X2016.02,X2016.03,X2016.04,X2016.05,X2016.06,X2016.07,X2016.08,X2016.09,X2016.10,X2016.11,X2016.12,X2017.01,X2017.02,X2017.03,X2017.04,X2017.05,X2017.06,X2017.07,X2017.08,X2017.09,X2017.10,X2017.11,X2017.12,X2018.01, X2018.02,X2018.03),
+                 .funs = c(mean="mean"))
+
+
+names(Rental_Listing_gp)[1]<-"Boro"
+
+Rental_Listing_gp_flt<-filter(Rental_Listing_gp, 
+Rental_Listing_gp$Boro!= "NYC")
+
+
+
+library(reshape2)
+Rental_Listing_gp_flt<-melt(Rental_Listing_gp_flt, id.vars=c("Boro"))
+
+
+
+#airbnb
+
+Price_Occupancy_data<- function(df){
+
+  df<-df[!is.na(df$monthly_price), ]
+
+
+df<-df[df$monthly_price!="", ]
+
+
+#total_listing_monthly_price<-total_listing_monthly_price_18[is.na(total_listing$monthly_price), ] 
+
+df$monthly_price <- gsub("[$|,]", "", df$monthly_price)
+
+df$monthly_price <- as.numeric(df$monthly_price )
+
+df<-df %>% group_by(df$neighbourhood_group_cleansed) %>% summarise_at(.vars = vars(monthly_price,availability_30),
+                 .funs = c(mean="mean"))
+
+df$availability_30_mean<-round(1-(df$availability_30_mean/30),2)*100
+
+names(df)[1]<-"Boro"
+
+names(df)[2]<-"Monthly_price"
+
+names(df)[3]<-"Occupancy_rate"
+
+return (df)
+}
+
+#March18
+total_listing_monthly_price_m18 <- read.csv("/Users/ranjitarajeevashetty/Downloads/March_2018/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_m18<-Price_Occupancy_data(total_listing_monthly_price_m18)
+
+#feb18
+total_listing_monthly_price_f18 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Feb_2018/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_f18<-Price_Occupancy_data(total_listing_monthly_price_f18)
+
+#Jan18
+total_listing_monthly_price_Jan18 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Jan_2018/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Jan18<-Price_Occupancy_data(total_listing_monthly_price_Jan18)
+
+#Dec17
+total_listing_monthly_price_Dec17 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Dec_2017/listings_all.csv",stringsAsFactors = FALSE)
+total_listing_monthly_price_Dec17<-Price_Occupancy_data(total_listing_monthly_price_Dec17)
+
+
+
+#Nov17
+
+total_listing_monthly_price_Nov17 <- read.csv("/Users/ranjitarajeevashetty/Downloads/NOV_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Nov17<-Price_Occupancy_data(total_listing_monthly_price_Nov17)
+
+#Oct17
+
+total_listing_monthly_price_oct17 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Oct_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_oct17<-Price_Occupancy_data(total_listing_monthly_price_oct17)
+
+#Sept 2017
+total_listing_monthly_price_Sept17 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Sept_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Sept17<-Price_Occupancy_data(total_listing_monthly_price_Sept17)
+
+#August 2017
+
+total_listing_monthly_price_Aug17 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Aug_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Aug17<-Price_Occupancy_data(total_listing_monthly_price_Aug17)
+
+#Jul 2017
+total_listing_monthly_price_Jul2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/July_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Jul2017<-Price_Occupancy_data(total_listing_monthly_price_Jul2017)
+
+#Jun 2017
+
+total_listing_monthly_price_Jun2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Jun_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Jun2017<-Price_Occupancy_data(total_listing_monthly_price_Jun2017)
+
+#May 2017
+
+total_listing_monthly_price_May2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/May_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_May2017<-Price_Occupancy_data(total_listing_monthly_price_May2017)
+
+#April 2017
+total_listing_monthly_price_April2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/April_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_April2017<-Price_Occupancy_data(total_listing_monthly_price_April2017)
+
+#March 2017
+total_listing_monthly_price_March2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/April_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_March2017<-Price_Occupancy_data(total_listing_monthly_price_March2017)
+
+#Feb 2017
+total_listing_monthly_price_Feb2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Feb_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Feb2017<-Price_Occupancy_data(total_listing_monthly_price_Feb2017)
+
+#Jan 2017
+
+total_listing_monthly_price_Jan2017 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Jan_2017/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Jan2017<-Price_Occupancy_data(total_listing_monthly_price_Jan2017)
+
+#Dec 2016
+
+total_listing_monthly_price_Dec2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Dec_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Dec2016<-Price_Occupancy_data(total_listing_monthly_price_Dec2016)
+
+#Nov 2016
+
+total_listing_monthly_price_Nov2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Nov_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Nov2016<-Price_Occupancy_data(total_listing_monthly_price_Nov2016)
+
+# Oct 2016
+total_listing_monthly_price_Oct2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Nov_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Oct2016<-Price_Occupancy_data(total_listing_monthly_price_Oct2016)
+
+#Sept 2016
+total_listing_monthly_price_Sept2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Sept_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Sept2016<-Price_Occupancy_data(total_listing_monthly_price_Sept2016)
+
+#Aug 2016
+
+total_listing_monthly_price_Aug2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Aug_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Aug2016<-Price_Occupancy_data(total_listing_monthly_price_Aug2016)
+
+#jun 2016
+total_listing_monthly_price_Jun2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Jun_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Jun2016<-Price_Occupancy_data(total_listing_monthly_price_Jun2016)
+
+total_listing_monthly_price_July2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/July_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_July2016<-Price_Occupancy_data(total_listing_monthly_price_July2016)
+
+#May 2016
+
+total_listing_monthly_price_May2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/May_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_May2016<-Price_Occupancy_data(total_listing_monthly_price_May2016)
+
+#April 2016
+
+total_listing_monthly_price_Apr2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/April_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Apr2016<-Price_Occupancy_data(total_listing_monthly_price_Apr2016)
+
+#March 2016
+
+total_listing_monthly_price_Mar2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/April_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Mar2016<-Price_Occupancy_data(total_listing_monthly_price_Mar2016)
+
+#Feb 2016
+total_listing_monthly_price_Feb2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Feb_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Feb2016<-Price_Occupancy_data(total_listing_monthly_price_Feb2016)
+
+#jan 2016
+total_listing_monthly_price_Jan2016 <- read.csv("/Users/ranjitarajeevashetty/Downloads/Jan_2016/listings_all.csv",stringsAsFactors = FALSE)
+
+total_listing_monthly_price_Jan2016<-Price_Occupancy_data(total_listing_monthly_price_Jan2016)
+
+#cbind(total_listing_monthly_price_m18,total_listing_monthly_price_f18,total_listing_monthly_price_Jan18,total_listing_monthly_price_Dec17,total_listing_monthly_price_Nov17,total_listing_monthly_price_oct17,total_listing_monthly_price_Sept17,total_listing_monthly_price_Aug17,total_listing_monthly_price_Jul2017,total_listing_monthly_price_Jun2017,total_listing_monthly_price_May2017,total_listing_monthly_price_April2017,total_listing_monthly_price_March2017,total_listing_monthly_price_Feb2017,total_listing_monthly_price_Jan2017,total_listing_monthly_price_Dec2016,total_listing_monthly_price_Nov2016,total_listing_monthly_price_Oct2016,total_listing_monthly_price_Sept2016,total_listing_monthly_price_Aug2016,total_listing_monthly_price_July2016,total_listing_monthly_price_Jun2016,total_listing_monthly_price_May2016,total_listing_monthly_price_Apr2016,total_listing_monthly_price_Mar2016,total_listing_monthly_price_Feb2016,total_listing_monthly_price_Jan2016)
+
+total_listing_monthly_price_TS<-cbind(total_listing_monthly_price_m18,total_listing_monthly_price_f18$Monthly_price,total_listing_monthly_price_f18$Occupancy_rate,total_listing_monthly_price_Jan18$Monthly_price,total_listing_monthly_price_Jan18$Occupancy_rate,total_listing_monthly_price_Dec17$Monthly_price,total_listing_monthly_price_Dec17$Occupancy_rate,total_listing_monthly_price_Nov17$Monthly_price,total_listing_monthly_price_Nov17$Occupancy_rate,total_listing_monthly_price_oct17$Monthly_price,total_listing_monthly_price_oct17$Occupancy_rate,total_listing_monthly_price_Sept17$Monthly_price,total_listing_monthly_price_Sept17$Occupancy_rate,total_listing_monthly_price_Aug17$Monthly_price,total_listing_monthly_price_Aug17$Occupancy_rate,total_listing_monthly_price_Jul2017$Monthly_price,total_listing_monthly_price_Jul2017$Occupancy_rate,total_listing_monthly_price_Jun2017$Monthly_price,total_listing_monthly_price_Jun2017$Occupancy_rate,total_listing_monthly_price_May2017$Monthly_price,total_listing_monthly_price_May2017$Occupancy_rate,total_listing_monthly_price_April2017$Monthly_price,total_listing_monthly_price_April2017$Occupancy_rate,total_listing_monthly_price_March2017$Monthly_price,total_listing_monthly_price_March2017$Occupancy_rate,total_listing_monthly_price_Feb2017$Monthly_price,total_listing_monthly_price_Feb2017$Occupancy_rate,total_listing_monthly_price_Jan2017$Monthly_price,total_listing_monthly_price_Jan2017$Occupancy_rate,total_listing_monthly_price_Dec2016$Monthly_price,total_listing_monthly_price_Dec2016$Occupancy_rate,total_listing_monthly_price_Nov2016$Monthly_price,total_listing_monthly_price_Nov2016$Occupancy_rate,total_listing_monthly_price_Oct2016$Monthly_price,total_listing_monthly_price_Oct2016$Occupancy_rate,total_listing_monthly_price_Sept2016$Monthly_price,total_listing_monthly_price_Sept2016$Occupancy_rate,total_listing_monthly_price_Aug2016$Monthly_price,total_listing_monthly_price_Aug2016$Occupancy_rate,total_listing_monthly_price_July2016$Monthly_price,total_listing_monthly_price_July2016$Occupancy_rate,total_listing_monthly_price_Jun2016$Monthly_price,total_listing_monthly_price_Jun2016$Occupancy_rate,total_listing_monthly_price_May2016$Monthly_price,total_listing_monthly_price_May2016$Occupancy_rate,total_listing_monthly_price_Apr2016$Monthly_price,total_listing_monthly_price_Apr2016$Occupancy_rate,total_listing_monthly_price_Mar2016$Monthly_price,total_listing_monthly_price_Mar2016$Occupancy_rate,total_listing_monthly_price_Feb2016$Monthly_price,total_listing_monthly_price_Feb2016$Occupancy_rate,total_listing_monthly_price_Jan2016$Monthly_price,total_listing_monthly_price_Jan2016$Occupancy_rate)
+
+names(total_listing_monthly_price_TS)[2]<-"Mar'18"
+names(total_listing_monthly_price_TS)[3]<-"Mar-18"
+names(total_listing_monthly_price_TS)[4]<-"Feb'18"
+names(total_listing_monthly_price_TS)[5]<-"Feb-18" #occupancy
+names(total_listing_monthly_price_TS)[6]<-"Jan'18"
+names(total_listing_monthly_price_TS)[7]<-"Jan-18"
+names(total_listing_monthly_price_TS)[8]<-"Dec'17"
+names(total_listing_monthly_price_TS)[9]<-"Dec-17"
+names(total_listing_monthly_price_TS)[10]<-"Nov'17"
+names(total_listing_monthly_price_TS)[11]<-"Nov-17"
+names(total_listing_monthly_price_TS)[12]<-"Oct'17"
+names(total_listing_monthly_price_TS)[13]<-"Oct-17"
+names(total_listing_monthly_price_TS)[14]<-"Sep'17"
+names(total_listing_monthly_price_TS)[15]<-"Sep-17"
+names(total_listing_monthly_price_TS)[16]<-"Aug'17"
+names(total_listing_monthly_price_TS)[17]<-"Aug-17"
+names(total_listing_monthly_price_TS)[18]<-"Jul'17"
+names(total_listing_monthly_price_TS)[19]<-"Jul-17"
+names(total_listing_monthly_price_TS)[20]<-"Jun'17"
+names(total_listing_monthly_price_TS)[21]<-"Jun-17"
+names(total_listing_monthly_price_TS)[22]<-"May'17"
+names(total_listing_monthly_price_TS)[23]<-"May-17"
+names(total_listing_monthly_price_TS)[24]<-"Apr'17"
+names(total_listing_monthly_price_TS)[25]<-"Apr-17"
+names(total_listing_monthly_price_TS)[26]<-"Mar'17"
+names(total_listing_monthly_price_TS)[27]<-"Mar-17"
+names(total_listing_monthly_price_TS)[28]<-"Feb'17"
+names(total_listing_monthly_price_TS)[29]<-"Feb-17"
+names(total_listing_monthly_price_TS)[30]<-"Jan'17"
+names(total_listing_monthly_price_TS)[31]<-"Jan-17"
+names(total_listing_monthly_price_TS)[32]<-"Dec'16"
+names(total_listing_monthly_price_TS)[33]<-"Dec-16"
+names(total_listing_monthly_price_TS)[34]<-"Nov'16"
+names(total_listing_monthly_price_TS)[35]<-"Nov-16"
+names(total_listing_monthly_price_TS)[36]<-"Oct'16"
+names(total_listing_monthly_price_TS)[37]<-"Oct-16"
+names(total_listing_monthly_price_TS)[38]<-"Sept'16"
+names(total_listing_monthly_price_TS)[39]<-"Sept-16"
+names(total_listing_monthly_price_TS)[40]<-"Aug'16"
+names(total_listing_monthly_price_TS)[41]<-"Aug-16"
+names(total_listing_monthly_price_TS)[42]<-"Jul'16"
+names(total_listing_monthly_price_TS)[43]<-"Jul-16"
+names(total_listing_monthly_price_TS)[44]<-"Jun'16"
+names(total_listing_monthly_price_TS)[45]<-"Jun-16"
+names(total_listing_monthly_price_TS)[46]<-"May'16"
+names(total_listing_monthly_price_TS)[47]<-"May-16"
+names(total_listing_monthly_price_TS)[48]<-"Apr'16"
+names(total_listing_monthly_price_TS)[49]<-"Apr-16"
+names(total_listing_monthly_price_TS)[50]<-"Mar'16"
+names(total_listing_monthly_price_TS)[51]<-"Mar-16"
+names(total_listing_monthly_price_TS)[52]<-"Feb'16"
+names(total_listing_monthly_price_TS)[53]<-"Feb-16"
+names(total_listing_monthly_price_TS)[54]<-"Jan'16"
+names(total_listing_monthly_price_TS)[55]<-"Jan-16"
+
+#median price
+
+total_listing_monthly_price_mprice<-total_listing_monthly_price_TS[,c("Boro","Mar'18","Feb'18","Jan'18","Dec'17","Nov'17","Oct'17","Sep'17","Aug'17","Jul'17","Jun'17","May'17","Apr'17","Mar'17","Feb'17","Jan'17","Dec'16","Nov'16","Oct'16","Sept'16","Aug'16","Jul'16","Jun'16","May'16","Apr'16","Mar'16","Feb'16","Jan'16")]
+
+#occupancy
+
+total_listing_monthly_occupancy_mprice<-total_listing_monthly_price_TS[,c("Boro","Mar-18","Feb-18","Jan-18","Dec-17","Nov-17","Oct-17","Sep-17","Aug-17","Jul-17","Jun-17","May-17","Apr-17","Mar-17","Feb-17","Jan-17","Dec-16","Nov-16","Oct-16","Sept-16","Aug-16","Jul-16","Jun-16","May-16","Apr-16","Mar-16","Feb-16","Jan-16")]
+
+#Median Price
+library(reshape2)
+total_listing_monthly_price_mprice_mel<-melt(total_listing_monthly_price_mprice, id.vars=c("Boro"))
+
+#Occupancy
+library(reshape2)
+total_listing_monthly_occupancy_mprice_mel<-melt(total_listing_monthly_occupancy_mprice, id.vars=c("Boro"))
+
+
+names(total_listing_monthly_occupancy_mprice_mel)[2]<-"Time_Period"
+
+names(total_listing_monthly_occupancy_mprice_mel)[3]<-"Occupancy_rate"
+
+# combining Rental and airbnb dataframe for price 
+
+Combined_rental_airbnb<-cbind(total_listing_monthly_price_mprice_mel,Rental_Listing_gp_flt$value)
+
+names(Combined_rental_airbnb)[4]<-"Rental_Prices"
+
+names(Combined_rental_airbnb)[3]<-"Airbnb_Prices"
+
+#Rental and airbnb dataframe for Occupancy 
+
+Rental_Listing_avail <- read.csv("/Users/ranjitarajeevashetty/Documents/R-Visualization/R Project/Rental_Avail.csv",stringsAsFactors = FALSE
+)
+
+#Rental_Listing<-Rental_Listing[!is.na(Rental_Listing[,3:])]
+
+#Rental_Listing_avail[!is.na(Rental_Listing_avail$X2016.01), ]
+
+#Rental_Listing_avail <- na.omit(Rental_Listing)
+Rental_Listing_avail[is.na(Rental_Listing_avail)]<- 0
+
+
+
+Rental_Listing_avail_gp<-Rental_Listing_avail %>% group_by(Rental_Listing_avail$Boro) %>% 
+  summarise_at(.vars = vars( X2016.01,X2016.02,X2016.03,X2016.04,X2016.05,X2016.06,X2016.07,X2016.08,X2016.09,X2016.10,X2016.11,X2016.12,X2017.01,X2017.02,X2017.03,X2017.04,X2017.05,X2017.06,X2017.07,X2017.08,X2017.09,X2017.10,X2017.11,X2017.12,X2018.01, X2018.02,X2018.03),
+                 .funs = c(mean="mean"))
+
+Rental_Listing_avail_gp[, 2:ncol(Rental_Listing_avail_gp)]<- (1-(Rental_Listing_avail_gp[, 2:ncol(Rental_Listing_avail_gp)]/12/30))*100
+
+#Rental_Listing_avail_gp[, 2:ncol(Rental_Listing_avail_gp)]<- Rental_Listing_avail_gp[, 2:ncol(Rental_Listing_avail_gp)]
+
+
+names(Rental_Listing_avail_gp)[1]<-"Boro"
+
+Rental_Listing_avail_gp_flt<-filter(Rental_Listing_avail_gp, 
+Rental_Listing_avail_gp$Boro!= "NYC")
+
+
+library(reshape2)
+Rental_Listing_avail_gp_flt<-melt(Rental_Listing_avail_gp_flt, id.vars=c("Boro"))
+
+
+
+names(Rental_Listing_avail_gp_flt)[2]<-"Time_Period"
+
+names(Rental_Listing_avail_gp_flt)[3]<-"Median_Occupancy_rate"
+
+#combined dataframe for occupancy
+
+
+
+
+Combined_occupancy_airbnb<-cbind(total_listing_monthly_occupancy_mprice_mel,Rental_Listing_avail_gp_flt$Median_Occupancy_rate)
+
+names(Combined_occupancy_airbnb)[3]<-"Airbnb_Occupancy_Rate"
+
+names(Combined_occupancy_airbnb)[4]<-"Rental_Occupancy_Rate"
+  
+# plotly
+
+
+#time vs price
+plot_ly(Combined_rental_airbnb, x = ~Time_Period , y = ~Airbnb_Prices, name='Airbnb',type = 'scatter', mode='lines',
+              color = ~Boro)%>%add_trace(y=~Rental_Prices, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Median Price"))
+
+#ime vs Occupancy
+plot_ly(Combined_occupancy_airbnb, x = ~Time_Period , y = ~Airbnb_Occupancy_Rate, name='Airbnb',type = 'scatter', mode='lines',
+              color = ~Boro)%>%add_trace(y=~Rental_Occupancy_Rate, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Occupancy Rate"))
+
+
+
+
+
+   
 ```
 
 
