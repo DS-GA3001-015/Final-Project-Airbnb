@@ -21,16 +21,25 @@ opts_chunk$set(fig.path="images/",
   
 ## Identify commercial vs household airbnb listings.
 
+
+
 ## Distribution of commercial and household listings across NY.
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/distribution-listing.png)
 
 ## Distribution of commercial and household listings by room type.
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/percentage-listing.jpg)
+
+
 
 
 ## Comparitive analysis between commercial and household listings wrt user scores.
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/score-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt user reviews.
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/review-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt price.
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost-comparison.jpg)
 
 ## Rental Policy Change
 
