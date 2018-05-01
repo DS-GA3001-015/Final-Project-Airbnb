@@ -1,0 +1,126 @@
+---
+title: "Rental-costs"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(leaflet)
+library(ggthemes)
+library(ggplot2)
+library(plotly)
+library(leaflet)
+library(readr)
+library(RColorBrewer)
+library(geosphere)
+library(geojsonio)
+library(sp)
+library(htmltools)
+```
+
+```{r}
+combined_airbnb_rental_price
+
+
+```
+
+```{r}
+
+astoria <- filter(combined_airbnb_rental_price, neighbourhood == "Canarsie")
+
+listing_count <-c(astoria$`2016-01-01l`,astoria$`2016-02-01l`,astoria$`2016-03-01l`,astoria$`2016-04-01l`,astoria$`2016-05-01l`,astoria$`2016-06-01l`,astoria$`2016-07-01l`,astoria$`2016-08-01l`,astoria$`2016-09-01l`,astoria$`2016-10-01l`,astoria$`2016-11-01l`,astoria$`2017-01-01l`,astoria$`2017-02-01l`,astoria$`2017-03-01l`,astoria$`2017-04-01l`,astoria$`2017-05-01l`,astoria$`2017-06-01l`,astoria$`2017-07-01l`,astoria$`2017-08-01l`,astoria$`2017-09-01l`,astoria$`2017-10-01l`,astoria$`2017-11-01l`)
+
+airbnb_diff <-c(astoria$`2016-01-01p` - astoria$`2016-02-01p`,
+astoria$`2016-02-01p` - astoria$`2016-03-01p`,
+astoria$`2016-03-01p` - astoria$`2016-04-01p`,
+astoria$`2016-04-01p` - astoria$`2016-05-01p`,
+astoria$`2016-05-01p` - astoria$`2016-06-01p`,
+astoria$`2016-06-01p` - astoria$`2016-07-01p`,
+astoria$`2016-07-01p` - astoria$`2016-08-01p`,
+astoria$`2016-08-01p` - astoria$`2016-09-01p`,
+astoria$`2016-09-01p` - astoria$`2016-10-01p`,
+astoria$`2016-10-01p` - astoria$`2016-11-01p`,
+astoria$`2016-11-01p` - astoria$`2016-12-01p`,
+astoria$`2017-01-01p` - astoria$`2017-02-01p`,
+astoria$`2017-02-01p` - astoria$`2017-03-01p`,
+astoria$`2017-03-01p` - astoria$`2017-04-01p`,
+astoria$`2017-04-01p` - astoria$`2017-05-01p`,
+astoria$`2017-05-01p` - astoria$`2017-06-01p`,
+astoria$`2017-06-01p` - astoria$`2017-07-01p`,
+astoria$`2017-07-01p` - astoria$`2017-08-01p`,
+astoria$`2017-08-01p` - astoria$`2017-09-01p`,
+astoria$`2017-09-01p` - astoria$`2017-10-01p`,
+astoria$`2017-10-01p` - astoria$`2017-11-01p`,
+astoria$`2017-11-01p` - astoria$`2017-12-01p`)
+
+
+rental_diff <-c(astoria$`2016-01` - astoria$`2016-02`,
+astoria$`2016-02` - astoria$`2016-03`,
+astoria$`2016-03` - astoria$`2016-04`,
+astoria$`2016-04` - astoria$`2016-05`,
+astoria$`2016-05` - astoria$`2016-06`,
+astoria$`2016-06` - astoria$`2016-07`,
+astoria$`2016-07` - astoria$`2016-08`,
+astoria$`2016-08` - astoria$`2016-09`,
+astoria$`2016-09` - astoria$`2016-10`,
+astoria$`2016-10` - astoria$`2016-11`,
+astoria$`2016-11` - astoria$`2016-12`,
+astoria$`2017-01` - astoria$`2017-02`,
+astoria$`2017-02` - astoria$`2017-03`,
+astoria$`2017-03` - astoria$`2017-04`,
+astoria$`2017-04` - astoria$`2017-05`,
+astoria$`2017-05` - astoria$`2017-06`,
+astoria$`2017-06` - astoria$`2017-07`,
+astoria$`2017-07` - astoria$`2017-08`,
+astoria$`2017-08` - astoria$`2017-09`,
+astoria$`2017-09` - astoria$`2017-10`,
+astoria$`2017-10` - astoria$`2017-11`,
+astoria$`2017-11` - astoria$`2017-12`)
+
+date_axis <- c('2016-01-01',
+  '2016-02-01',
+'2016-03-01',
+'2016-04-01',
+'2016-05-01',
+'2016-06-01',
+'2016-07-01',
+'2016-08-01',
+'2016-09-01',
+'2016-10-01',
+'2016-11-01',
+'2016-12-01',
+'2017-02-01',
+'2017-03-01',
+'2017-04-01',
+'2017-05-01',
+'2017-06-01',
+'2017-07-01',
+'2017-08-01',
+'2017-09-01',
+'2017-10-01',
+'2017-11-01',
+'2017-12-01'
+)
+
+df <- as.data.frame(cbind(airbnb_diff, rental_diff, date_axis, listing_count ))
+df$change_rate <- as.numeric(df$rental_diff)/as.numeric(df$airbnb_diff)
+
+
+
+library(plotly)
+
+
+p <- plot_ly(df) %>%
+  add_trace(x = ~as.Date(df$date_axis), y = ~df$change_rate, type = 'scatter', mode = 'lines', name = 'Wind',
+            marker = list(color = '#C9EFF9'),
+            hoverinfo = "text", text = ~df$listing_count) %>%
+  layout(title = 'Change in rental price by change in airbnb price',
+         xaxis = list(title = "Time"),
+         yaxis = list(side = 'left', title = 'Change of rental price with change airbnb price', showgrid = FALSE, zeroline = FALSE))
+         
+p
+```
