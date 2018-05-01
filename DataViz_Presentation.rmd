@@ -21,60 +21,60 @@ opts_chunk$set(fig.path="images/",
   
 ## Identify commercial vs household airbnb listings.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
+![''](images/listing-count-split.png)
 
 
 ## Distribution of commercial and household listings across NY.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/distribution-listing.png)
+![''](images/distribution-listing.png)
 
 ## Distribution of commercial and household listings by room type.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/percentage-listing.jpg)
+![''](images/percentage-listing.jpg)
 
 
 
 
 ## Comparitive analysis between commercial and household listings wrt user scores.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/score-comparison.jpg)
+![''](images/score-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt user reviews.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/review-comparison.jpg)
+![''](images/review-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt price.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost-comparison.jpg)
+![''](images/cost-comparison.jpg)
 
 ## Rental Policy Change
   
 Number of entire homes/apt decreased by 3.6% and private rooms increased on 9.2%. 
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects1.png)
+![''](images/policy-effects1.png)
 
 
 ## Effects on commercial listings
   
 Number of entire homes/apt decreased by 7.8% and private rooms increased on 16%.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-commercial.png)
+![''](images/policy-effects-commercial.png)
 
 ## Effects on non-commercial listings
   
 Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-household.png)
+![''](images/policy-effects-household.png)
 
 ## Impact of Policy Change on distribution of room types  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/time-series.png)
+![''](images/time-series.png)
 
 ## How have AirBnb's growth affected rental prices?  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/airbnb-vs-rentals.png)
+![''](images/airbnb-vs-rentals.png)
 
 ## Pointout users having multiple listings  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/pin-point-users.jpg)
+![''](images/pin-point-users.jpg)
 
