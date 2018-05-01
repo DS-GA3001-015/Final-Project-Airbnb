@@ -187,7 +187,7 @@ shinyServer(function(input, output, session) {
         clearControls() %>% 
         clearGroup(group = c("2016","2017"))%>%
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_score)) %>%
-        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_score, opacity = 1.0)
+        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_score, opacity = 1.0, title = "Score")
     }
     else if(input$radio=="review"){
       #print("REVIEW")
@@ -196,7 +196,7 @@ shinyServer(function(input, output, session) {
         clearControls() %>% 
         clearGroup(group = c("2016","2017"))%>%
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_review)) %>%
-        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_review, opacity = 1.0)
+        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_review, opacity = 1.0, title = "Review")
     }
     else if(input$radio=="cost"){
       #print("COST")
@@ -205,7 +205,7 @@ shinyServer(function(input, output, session) {
         clearControls() %>% 
         clearGroup(group = c("2016","2017"))%>%
         addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = pal(airbnb_neighbourhoods$avg_cost)) %>%
-        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_cost, opacity = 1.0)
+        leaflet::addLegend(pal = pal, values = ~airbnb_neighbourhoods$avg_cost, opacity = 1.0, title = "Cost")
     }
   })
   
