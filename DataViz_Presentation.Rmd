@@ -79,32 +79,32 @@ Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.
 ![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/pin-point-users.jpg)
 
 ## Tourist places having maximum number of nearest Airbnb listings
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/Tourist place with max airbnb.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Tourist place with max airbnb.png)
 
 ## Average listing prices for the nearest Airbnbs across some of the top tourist places
 
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/cost variation.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/cost variation.png)
 ## Average listing prices for the nearest commercial Airbnbs across some of the top tourist places
 
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/Airbnb Commercial cost variation.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Airbnb Commercial cost variation.png)
 
 ## Average listing prices for the nearest non commercial Airbnbs across some of the top tourist places
 
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/Airbnb non commercial listing.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Airbnb non commercial listing.png)
 
 ## Relative proximity of commerical and non commercial Airbnb listings to tourist places
 
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/Nearest airbnb.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Nearest airbnb.png)
 
 
 ## Time series analysis of rental and Airbnb rent prices
 
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/Time series price.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Time series price.png)
 
 
 ## Time series analysis of rental and Airbnb Occupancy rate
 
-![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/Proximity_Airbnb_tourism_files/figure-html/Time series Occupancy.png)
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Time series Occupancy.png)
 
 
 
