@@ -1,6 +1,7 @@
 ---
-title: "DataViz Presentation"
-author: "Data Viz Team"
+title: "Effects of AirBnb on NY"
+subtitle: "How AirBnb shapes living pattern in NYC!"
+author: "Ranjitha, Rahul, Anand, Shivendra "
 date: "1 May 2018"
 output: ioslides_presentation
 ---
@@ -11,38 +12,69 @@ library(knitr)
 opts_chunk$set(fig.path="images/",
                cache.path="cache/",
                cache=FALSE,
-               echo=TRUE,
+               echo=FALSE,
                message=FALSE,
                warning=FALSE) 
 ```
 
-# In the morning
+# Introduction  
+  
+## Identify commercial vs household airbnb listings.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
 
-## Getting up
 
-- Turn off alarm
-- Get out of bed
+## Distribution of commercial and household listings across NY.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/distribution-listing.png)
 
-## Breakfast
+## Distribution of commercial and household listings by room type.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/percentage-listing.jpg)
 
-- Eat eggs
-- Drink coffee
 
-# In the evening
 
-## Dinner
 
-- Eat spaghetti
-- Drink wine
+## Comparitive analysis between commercial and household listings wrt user scores.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/score-comparison.jpg)
 
-----
+## Comparitive analysis between commercial and household listings wrt user reviews.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/review-comparison.jpg)
 
-```{r}
-#adding picture
-#![picture of spaghetti](images/spaghetti.jpg)
-```
+## Comparitive analysis between commercial and household listings wrt price.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost-comparison.jpg)
 
-## Going to sleep
+## Rental Policy Change
+  
+Number of entire homes/apt decreased by 3.6% and private rooms increased on 9.2%. 
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects1.png)
 
-- Get in bed
-- Count sheep
+
+## Effects on commercial listings
+  
+Number of entire homes/apt decreased by 7.8% and private rooms increased on 16%.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-commercial.png)
+
+## Effects on non-commercial listings
+  
+Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-household.png)
+
+## Impact of Policy Change on distribution of room types  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/time-series.png)
+
+## How have AirBnb's growth affected rental prices?  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/airbnb-vs-rentals.png)
+
+## Pointout users having multiple listings  
+  
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/pin-point-users.jpg)
+
