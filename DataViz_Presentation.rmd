@@ -20,7 +20,7 @@ opts_chunk$set(fig.path="images/",
 # Introduction  
   
 ## Identify commercial vs household airbnb listings.
-
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
 
 
 ## Distribution of commercial and household listings across NY.
@@ -42,18 +42,22 @@ opts_chunk$set(fig.path="images/",
 ![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost-comparison.jpg)
 
 ## Rental Policy Change
-
-## Effects of Policy Change in distribution of room types
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects1.png)
 
 ## Effects of Policy Change on commercial listings
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-commercial.png)
 
 ## Effects of Policy Change on non-commercial listings
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-household.png)
 
 ## Impact of Policy Change on distribution of room types
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/time-series.png)
 
 ## Pointout users having multiple listings
 
 ## Compare quality between commercial and non-commercial
 
 ## How have AirBnb's growth affected rental prices?
+
+```
 
