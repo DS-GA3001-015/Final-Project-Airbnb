@@ -21,60 +21,91 @@ opts_chunk$set(fig.path="images/",
   
 ## Identify commercial vs household airbnb listings.  
   
-![''](images/listing-count-split.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
 
 
 ## Distribution of commercial and household listings across NY.  
   
-![''](images/distribution-listing.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/distribution-listing.png)
 
 ## Distribution of commercial and household listings by room type.  
   
-![''](images/percentage-listing.jpg)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/percentage-listing.jpg)
 
 
 
 
 ## Comparitive analysis between commercial and household listings wrt user scores.  
   
-![''](images/score-comparison.jpg)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/score-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt user reviews.  
   
-![''](images/review-comparison.jpg)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/review-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt price.  
   
-![''](images/cost-comparison.jpg)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost-comparison.jpg)
 
 ## Rental Policy Change
   
 Number of entire homes/apt decreased by 3.6% and private rooms increased on 9.2%. 
   
-![''](images/policy-effects1.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects1.png)
 
 
 ## Effects on commercial listings
   
 Number of entire homes/apt decreased by 7.8% and private rooms increased on 16%.  
   
-![''](images/policy-effects-commercial.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-commercial.png)
 
 ## Effects on non-commercial listings
   
 Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.  
   
-![''](images/policy-effects-household.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-household.png)
 
 ## Impact of Policy Change on distribution of room types  
   
-![''](images/time-series.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/time-series.png)
 
 ## How have AirBnb's growth affected rental prices?  
   
-![''](images/airbnb-vs-rentals.png)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/airbnb-vs-rentals.png)
 
 ## Pointout users having multiple listings  
   
-![''](images/pin-point-users.jpg)
+![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/pin-point-users.jpg)
+
+## Tourist places having maximum number of nearest Airbnb listings
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Tourist place with max airbnb.png)
+
+## Average listing prices for the nearest Airbnbs across some of the top tourist places
+
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/cost variation.png)
+## Average listing prices for the nearest commercial Airbnbs across some of the top tourist places
+
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Airbnb Commercial cost variation.png)
+
+## Average listing prices for the nearest non commercial Airbnbs across some of the top tourist places
+
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Airbnb non commercial listing.png)
+
+## Relative proximity of commerical and non commercial Airbnb listings to tourist places
+
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Nearest airbnb.png)
+
+
+## Time series analysis of rental and Airbnb rent prices
+
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Time series price.png)
+
+
+## Time series analysis of rental and Airbnb Occupancy rate
+
+![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Time series Occupancy.png)
+
+
+
 
