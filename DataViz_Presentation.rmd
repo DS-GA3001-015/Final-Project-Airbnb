@@ -1,6 +1,7 @@
 ---
-title: "DataViz Presentation"
-author: "Data Viz Team"
+title: "Effects of AirBnb on NY"
+subtitle: "How AirBnb shapes living pattern in NYC!"
+author: "Ranjitha, Rahul, Anand, Shivendra "
 date: "1 May 2018"
 output: ioslides_presentation
 ---
@@ -11,38 +12,39 @@ library(knitr)
 opts_chunk$set(fig.path="images/",
                cache.path="cache/",
                cache=FALSE,
-               echo=TRUE,
+               echo=FALSE,
                message=FALSE,
                warning=FALSE) 
 ```
 
-# In the morning
+# Introduction  
+  
+## Identify commercial vs household airbnb listings.
 
-## Getting up
+## Distribution of commercial and household listings across NY.
 
-- Turn off alarm
-- Get out of bed
+## Distribution of commercial and household listings by room type.
 
-## Breakfast
 
-- Eat eggs
-- Drink coffee
+## Comparitive analysis between commercial and household listings wrt user scores.
 
-# In the evening
+## Comparitive analysis between commercial and household listings wrt user reviews.
 
-## Dinner
+## Comparitive analysis between commercial and household listings wrt price.
 
-- Eat spaghetti
-- Drink wine
+## Rental Policy Change
 
-----
+## Effects of Policy Change in distribution of room types
 
-```{r}
-#adding picture
-#![picture of spaghetti](images/spaghetti.jpg)
-```
+## Effects of Policy Change on commercial listings
 
-## Going to sleep
+## Effects of Policy Change on non-commercial listings
 
-- Get in bed
-- Count sheep
+## Impact of Policy Change on distribution of room types
+
+## Pointout users having multiple listings
+
+## Compare quality between commercial and non-commercial
+
+## How have AirBnb's growth affected rental prices?
+
