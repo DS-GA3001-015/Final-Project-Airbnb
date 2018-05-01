@@ -282,8 +282,8 @@ shinyServer(function(input, output, session) {
       clearControls()%>%
       clearMarkers()%>%
       clearGroup(group = c("2016","2017"))%>%
-      addCircles(data =mul_16,group = "2016",color=color_room) %>%
-      addCircles(data =mul_17, group = "2017",color=color_room) %>%
+      addCircles(data =mul_16,group = "2016",color=color_room,popup = paste("Host has ",mul_16$sum_total," listings",sep="")) %>%
+      addCircles(data =mul_17, group = "2017",color=color_room,popup = paste("Host has ",mul_17$sum_total," listings",sep="")) %>%
       addLayersControl(overlayGroups = c("2016","2017")) %>%
       addLegend(pal=pal,values = mul_16$room_type)
     
