@@ -432,6 +432,17 @@ plot2
 
 ```
 
+
+
+
+
+
+
+
+
+
+
+
 ```{r }
 
 #cost variation with tourist palce
@@ -456,7 +467,7 @@ top_places_filtrd_cost<-merge(cost_airbnb_tourist,top_places_df, by.x= "Tourist_
 
 
 plot3<-ggplot(data= top_places_filtrd_cost)+ geom_bar(mapping = aes(x = reorder(Tourist_place,-Avg_Price), y = Avg_Price,fill=Room_Type), stat = "identity",position=position_dodge())+geom_text(data= top_places_filtrd_cost, mapping = aes(x=top_places_filtrd_cost$Tourist_place, y =round(top_places_filtrd_cost$Avg_Price,2), fill = top_places_filtrd_cost$Room_Type, label=round(top_places_filtrd_cost$Avg_Price)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
-labs(title= "cost variation with tourist palce", x= "Tourist_place", y = 'Price') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
+labs(title= "cost variation with tourist palce", x= "Tourist Place", y = 'Price in $') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
 
 plot3
 
@@ -488,12 +499,12 @@ top_places_filtrd_cost_non_com<-merge(cost_airbnb_tourist_non_com,top_places_df,
 
 
 plot3_com<-ggplot(data= top_places_filtrd_cost_com)+ geom_bar(mapping = aes(x = reorder(Tourist_place,-Avg_Price), y = Avg_Price,fill=Room_Type), stat = "identity",position=position_dodge())+geom_text(data= top_places_filtrd_cost_com, mapping = aes(x=top_places_filtrd_cost_com$Tourist_place, y =round(top_places_filtrd_cost_com$Avg_Price,2), fill = top_places_filtrd_cost_com$Room_Type, label=round(top_places_filtrd_cost_com$Avg_Price)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
-labs(title= "Airbnb Commercial Listing Cost variation with Tourist palce", x= "Tourist_place", y = 'Price') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
+labs(title= "Airbnb Commercial Listing Cost variation with Tourist palce", x= "Tourist Place", y = 'Price in $') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
 
 
 
 plot3_non_com<-ggplot(data= top_places_filtrd_cost_non_com)+ geom_bar(mapping = aes(x = reorder(Tourist_place,-Avg_Price), y = Avg_Price,fill=Room_Type), stat = "identity",position=position_dodge())+geom_text(data= top_places_filtrd_cost_non_com, mapping = aes(x=top_places_filtrd_cost_non_com$Tourist_place, y =round(top_places_filtrd_cost_non_com$Avg_Price,2), fill = top_places_filtrd_cost_non_com$Room_Type, label=round(top_places_filtrd_cost_non_com$Avg_Price)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
-labs(title= "Airbnb Non Commercial Listing Cost variation with Tourist palce", x= "Tourist_place", y = 'Price') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
+labs(title= "Airbnb Non Commercial Listing Cost variation with Tourist palce", x= "Tourist Place", y = 'Price in $') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
 
 plot3_com
 
@@ -552,7 +563,7 @@ names(total_listing_min_dist_df)[3]<-"Minimum_Distance"
 total_listing_min_dist_df_mg<-merge(total_listing_min_dist_df,top_places_df,by.x="Tourist_Place",by.y="top_places")
 
 plot4<-ggplot(data= total_listing_min_dist_df_mg)+ geom_bar(mapping = aes(x = reorder(Tourist_Place,-Minimum_Distance), y = Minimum_Distance,fill=Listing_Type), stat = "identity",position=position_dodge())+geom_text(data= total_listing_min_dist_df_mg, mapping = aes(x=total_listing_min_dist_df_mg$Tourist_Place, y =round(total_listing_min_dist_df_mg$Minimum_Distance,2), fill = total_listing_min_dist_df_mg$Listing_Type, label=round(total_listing_min_dist_df_mg$Minimum_Distance)) ,position = position_dodge(width=0.9),hjust= 0.5,vjust=0,size=3)+
-labs(title= "Nearest Airbnb to the tourist place", x= "Tourist_place", y = 'Nearest Distnace') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
+labs(title= "Nearest Airbnb to the tourist place", x= "Tourist Place", y = 'Nearest Distnace in mtrs') + theme(axis.text.x = element_text(angle=90, vjust=0.6))
 
 plot4
 
@@ -564,7 +575,7 @@ plot4
 ```
 
 
-```{r}
+```{r }
 
 
 
@@ -784,6 +795,9 @@ total_listing_monthly_price_Jan2016<-Price_Occupancy_data(total_listing_monthly_
 
 total_listing_monthly_price_TS<-cbind(total_listing_monthly_price_m18,total_listing_monthly_price_f18$Monthly_price,total_listing_monthly_price_f18$Occupancy_rate,total_listing_monthly_price_Jan18$Monthly_price,total_listing_monthly_price_Jan18$Occupancy_rate,total_listing_monthly_price_Dec17$Monthly_price,total_listing_monthly_price_Dec17$Occupancy_rate,total_listing_monthly_price_Nov17$Monthly_price,total_listing_monthly_price_Nov17$Occupancy_rate,total_listing_monthly_price_oct17$Monthly_price,total_listing_monthly_price_oct17$Occupancy_rate,total_listing_monthly_price_Sept17$Monthly_price,total_listing_monthly_price_Sept17$Occupancy_rate,total_listing_monthly_price_Aug17$Monthly_price,total_listing_monthly_price_Aug17$Occupancy_rate,total_listing_monthly_price_Jul2017$Monthly_price,total_listing_monthly_price_Jul2017$Occupancy_rate,total_listing_monthly_price_Jun2017$Monthly_price,total_listing_monthly_price_Jun2017$Occupancy_rate,total_listing_monthly_price_May2017$Monthly_price,total_listing_monthly_price_May2017$Occupancy_rate,total_listing_monthly_price_April2017$Monthly_price,total_listing_monthly_price_April2017$Occupancy_rate,total_listing_monthly_price_March2017$Monthly_price,total_listing_monthly_price_March2017$Occupancy_rate,total_listing_monthly_price_Feb2017$Monthly_price,total_listing_monthly_price_Feb2017$Occupancy_rate,total_listing_monthly_price_Jan2017$Monthly_price,total_listing_monthly_price_Jan2017$Occupancy_rate,total_listing_monthly_price_Dec2016$Monthly_price,total_listing_monthly_price_Dec2016$Occupancy_rate,total_listing_monthly_price_Nov2016$Monthly_price,total_listing_monthly_price_Nov2016$Occupancy_rate,total_listing_monthly_price_Oct2016$Monthly_price,total_listing_monthly_price_Oct2016$Occupancy_rate,total_listing_monthly_price_Sept2016$Monthly_price,total_listing_monthly_price_Sept2016$Occupancy_rate,total_listing_monthly_price_Aug2016$Monthly_price,total_listing_monthly_price_Aug2016$Occupancy_rate,total_listing_monthly_price_July2016$Monthly_price,total_listing_monthly_price_July2016$Occupancy_rate,total_listing_monthly_price_Jun2016$Monthly_price,total_listing_monthly_price_Jun2016$Occupancy_rate,total_listing_monthly_price_May2016$Monthly_price,total_listing_monthly_price_May2016$Occupancy_rate,total_listing_monthly_price_Apr2016$Monthly_price,total_listing_monthly_price_Apr2016$Occupancy_rate,total_listing_monthly_price_Mar2016$Monthly_price,total_listing_monthly_price_Mar2016$Occupancy_rate,total_listing_monthly_price_Feb2016$Monthly_price,total_listing_monthly_price_Feb2016$Occupancy_rate,total_listing_monthly_price_Jan2016$Monthly_price,total_listing_monthly_price_Jan2016$Occupancy_rate)
 
+
+
+
 names(total_listing_monthly_price_TS)[2]<-"Mar'18"
 names(total_listing_monthly_price_TS)[3]<-"Mar-18"
 names(total_listing_monthly_price_TS)[4]<-"Feb'18"
@@ -921,15 +935,16 @@ names(Combined_occupancy_airbnb)[4]<-"Rental_Occupancy_Rate"
 
 names(Combined_rental_airbnb)[2]<-"Time_Period"
 
+Combined_rental_airbnb<-arrange(Combined_rental_airbnb, desc(Time_Period))
 
 #time vs price
 plot_ly(Combined_rental_airbnb, x = ~Time_Period , y = ~Airbnb_Prices, name='Airbnb',type = 'scatter', mode='lines',
-              color = ~Boro)%>%add_trace(y=~Rental_Prices, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Median Price"))
+              color = ~Boro)%>%add_trace(y=~Rental_Prices, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Median Price"))%>%layout(xaxis = list(autorange = "reversed"))
 
-Combined_occupancy_airbnb
+
 #ime vs Occupancy
 plot_ly(Combined_occupancy_airbnb, x = ~Time_Period , y = ~Airbnb_Occupancy_Rate, name='Airbnb',type = 'scatter', mode='lines',
-              color = ~Boro)%>%add_trace(y=~Rental_Occupancy_Rate, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Occupancy Rate"))
+              color = ~Boro)%>%add_trace(y=~Rental_Occupancy_Rate, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Occupancy Rate"))%>%layout(xaxis = list(autorange = "reversed"))
 
 
 
@@ -937,6 +952,18 @@ plot_ly(Combined_occupancy_airbnb, x = ~Time_Period , y = ~Airbnb_Occupancy_Rate
 
    
 ```
+
+```{r fig.width=5,fig.height=5}
+
+plot_ly(Combined_rental_airbnb, x = ~Time_Period , y = ~Airbnb_Prices, name='Airbnb',type = 'scatter', mode='lines',
+              color = ~Boro)%>%add_trace(y=~Rental_Prices, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Median Price"))%>%layout(xaxis = list(autorange = "reversed"))
+
+
+#ime vs Occupancy
+plot_ly(Combined_occupancy_airbnb, x = ~Time_Period , y = ~Airbnb_Occupancy_Rate, name='Airbnb',type = 'scatter', mode='lines',
+              color = ~Boro)%>%add_trace(y=~Rental_Occupancy_Rate, name='Rentals',type = 'scatter', mode='lines', line=list(width= 4,dash='dot') )%>%layout(xaxis=list(title="",tickangle=45 ),yaxis=list(title="Occupancy Rate"))%>%layout(xaxis = list(autorange = "reversed"))
+```
+
 
 
 
