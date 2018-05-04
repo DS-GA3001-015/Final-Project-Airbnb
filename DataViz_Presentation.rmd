@@ -24,7 +24,6 @@ opts_chunk$set(fig.path="images/",
 ![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
 
 
-
 ## Distribution of commercial and household listings across NY.  
   
 ![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/distribution-listing.png)
@@ -82,18 +81,18 @@ Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.
 ## Tourist places having maximum number of nearest Airbnb listings
 ![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Tourist place with max airbnb.png)
 
-## Average listing prices for the nearest Airbnbs
+## Average listing prices for the nearest Airbnbs across some of the top tourist places
 
 ![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/cost variation.png)
-## Average listing prices for the nearest commercial Airbnbs 
+## Average listing prices for the nearest commercial Airbnbs across some of the top tourist places
 
 ![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Airbnb Commercial cost variation.png)
 
-## Average listing prices for the nearest non commercial Airbnbs
+## Average listing prices for the nearest non commercial Airbnbs across some of the top tourist places
 
 ![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Airbnb non commercial listing.png)
 
-## Proximity of Airbnb listings to tourist places
+## Relative proximity of commerical and non commercial Airbnb listings to tourist places
 
 ![''](/Users/ranjitarajeevashetty/Final-Project-Airbnb/images/Nearest airbnb.png)
 
