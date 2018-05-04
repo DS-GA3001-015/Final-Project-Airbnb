@@ -4,6 +4,7 @@ author: "Data Viz Team"
 date: "21 April 2018"
 output: 
   html_document:
+    code_folding: hide
     keep_md: true
 ---
 
@@ -13,8 +14,7 @@ library(knitr)
 opts_chunk$set(fig.path="./tempdata/images/",
                cache.path="cache/",
                cache=FALSE,
-               echo=FALSE,
-               message=FALSE,
+               echo=TRUE,message=FALSE,
                warning=FALSE) 
 ```
 
@@ -102,9 +102,8 @@ total_listing_2 = merge(listings_updated_2,combined_unique_listings,by="id",all.
 total_listings = rbind(total_listing_1,total_listing_2)
 total_listings_commercial <- filter(total_listings, is_commercial=="Commercial Listing")
 total_listings_non_commercial <- filter(total_listings, is_commercial=="Household Listing")
-```
 
-```{r}
+
 library(htmlwidgets)
 library(htmltools)
 
@@ -163,15 +162,6 @@ addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pa
   leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0,title = "cost")
 
 
-#saveWidget(p_commercial_score, file="p_commercial_score.html")
-#saveWidget(p_commercial_review, file="p_commercial_review.html")
-#saveWidget(p_commercial_cost, file="p_commercial_cost.html")
-
-```
-
-
-
-```{r}
 review_columns <- c("review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value")
 total_listings_non_commercial$avg_review_value <- (total_listings_non_commercial$review_scores_accuracy + total_listings_non_commercial$review_scores_cleanliness + total_listings_non_commercial$review_scores_checkin + total_listings_non_commercial$review_scores_communication + total_listings_non_commercial$review_scores_location + total_listings_non_commercial$review_scores_value)/6
 total_listings_non_commercial$avg_review_value[is.na(total_listings_non_commercial$avg_review_value) ]<- 0
@@ -225,13 +215,7 @@ p_non_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
   leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0,title = "cost")
 
-#saveWidget(p_non_commercial_score, file="p_non_commercial_score.html")
-#saveWidget(p_non_commercial_review, file="p_non_commercial_review.html")
-#saveWidget(p_non_commercial_cost, file="p_non_commercial_cost.html")
-
-
 ```
-
 
 ```{r fig.width=8,fig.height=6}
 browsable(
@@ -323,7 +307,3 @@ tsm$Percentage = (tsm$count/sum(tsm$count))*100
 ggplot(data=tsm, aes(x=reorder(tsm$`Listing Status`,tsm$Percentage), y=Percentage)) +
 geom_bar(stat="identity", width = 0.3,fill='steelblue') + coord_flip()+ xlab("Listing Status") + ylab("Percentage") + ggtitle("Distribution of Listings") + theme_minimal() + scale_fill_brewer(palette="Paired")
 ```
-
-```{r fig.width=6,fig.height=4}
-```
-
