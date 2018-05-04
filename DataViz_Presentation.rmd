@@ -1,9 +1,12 @@
 ---
-title: "Effects of AirBnb on NY"
-subtitle: "How AirBnb shapes living pattern in NYC!"
-author: "Ranjitha, Rahul, Anand, Shivendra "
+title: "Impact of AirBnb on Housing in NYC"
+subtitle: "A study of AirBnb and related data ecosystems"
+author: "Ranjitha, Rahul, Anand, Shivendra"
 date: "1 May 2018"
-output: ioslides_presentation
+output: 
+  html_document:
+    code_folding: hide
+    keep_md: true
 ---
 
 
@@ -18,9 +21,13 @@ opts_chunk$set(fig.path="images/",
 ```
 
 # Introduction  
-  
+  - Segregate AirBnb listings into commercial and household rentals.
+  - Comparitive analysis between commercial and household rentals.
+  - Impact of AirBnb growth on rentals in NYC.
+  - Proximity of AirBnb rentals to tourist places.  
+
 ## Identify commercial vs household airbnb listings.  
-  
+
 ![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
 
 
