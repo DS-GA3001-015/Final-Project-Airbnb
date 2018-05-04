@@ -15,6 +15,7 @@ library(reshape)
 ```
 
 ```{r}
+<<<<<<< Updated upstream
 January_2016 <- as.data.frame(fread("data/2016_January_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 February_2016 <- as.data.frame(fread("data/2016_February_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 March_2016 <- as.data.frame(fread("data/2016_March_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
@@ -27,6 +28,33 @@ September_2016 <- as.data.frame(fread("data/2016_September_listings.csv", select
 October_2016 <- as.data.frame(fread("data/2016_October_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 November_2016 <- as.data.frame(fread("data/2016_November_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 December_2016 <- as.data.frame(fread("data/2016_December_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+||||||| merged common ancestors
+January_2016 <- as.data.frame(fread("all Listing Data/2016_January_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+February_2016 <- as.data.frame(fread("all Listing Data/2016_February_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+March_2016 <- as.data.frame(fread("all Listing Data/2016_March_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+April_2016 <- as.data.frame(fread("all Listing Data/2016_April_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+May_2016 <- as.data.frame(fread("all Listing Data/2016_May_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+June_2016 <- as.data.frame(fread("all Listing Data/2016_June_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+July_2016 <- as.data.frame(fread("all Listing Data/2016_July_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+August_2016 <- as.data.frame(fread("all Listing Data/2016_August_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+September_2016 <- as.data.frame(fread("all Listing Data/2016_September_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+October_2016 <- as.data.frame(fread("all Listing Data/2016_October_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+November_2016 <- as.data.frame(fread("all Listing Data/2016_November_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+December_2016 <- as.data.frame(fread("all Listing Data/2016_December_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+=======
+January_2016 <- as.data.frame(fread("all Listing Data/2016_January_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+February_2016 <- as.data.frame(fread("all Listing Data/2016_February_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+March_2016 <- as.data.frame(fread("all Listing Data/2016_March_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+April_2016 <- as.data.frame(fread("all Listing Data/2016_April_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+May_2016 <- as.data.frame(fread("all Listing Data/2016_May_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+June_2016 <- as.data.frame(fread("all Listing Data/2016_June_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+July_2016 <- as.data.frame(fread("all Listing Data/2016_July_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+August_2016 <- as.data.frame(fread("all Listing Data/2016_August_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+September_2016 <- as.data.frame(fread("all Listing Data/2016_September_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+October_2016 <- as.data.frame(fread("all Listing Data/2016_October_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+November_2016 <- as.data.frame(fread("all Listing Data/2016_November_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+December_2016 <- as.data.frame(fread("all Listing Data/2016_December_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+>>>>>>> Stashed changes
 ```
 
 ```{r}
@@ -35,6 +63,7 @@ df_2016 <- rbindlist(list(January_2016,February_2016,March_2016,April_2016,May_2
 
 
 ```{r}
+<<<<<<< Updated upstream
 January_2017 <- as.data.frame(fread("data/2017_January_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 February_2017 <- as.data.frame(fread("data/2017_February_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 March_2017 <- as.data.frame(fread("data/2017_March_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
@@ -47,6 +76,33 @@ September_2017 <- as.data.frame(fread("data/2017_September_listings.csv", select
 October_2017 <- as.data.frame(fread("data/2017_October_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 November_2017 <- as.data.frame(fread("data/2017_November_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
 December_2017 <- as.data.frame(fread("data/2017_December_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+||||||| merged common ancestors
+January_2017 <- as.data.frame(fread("all Listing Data/2017_January_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+February_2017 <- as.data.frame(fread("all Listing Data/2017_February_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+March_2017 <- as.data.frame(fread("all Listing Data/2017_March_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+April_2017 <- as.data.frame(fread("all Listing Data/2017_April_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+May_2017 <- as.data.frame(fread("all Listing Data/2017_May_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+June_2017 <- as.data.frame(fread("all Listing Data/2017_June_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+July_2017 <- as.data.frame(fread("all Listing Data/2017_July_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+August_2017 <- as.data.frame(fread("all Listing Data/2017_August_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+September_2017 <- as.data.frame(fread("all Listing Data/2017_September_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+October_2017 <- as.data.frame(fread("all Listing Data/2017_October_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+November_2017 <- as.data.frame(fread("all Listing Data/2017_November_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+December_2017 <- as.data.frame(fread("all Listing Data/2017_December_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name")))
+=======
+January_2017 <- as.data.frame(fread("all Listing Data/2017_January_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+February_2017 <- as.data.frame(fread("all Listing Data/2017_February_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+March_2017 <- as.data.frame(fread("all Listing Data/2017_March_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+April_2017 <- as.data.frame(fread("all Listing Data/2017_April_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+May_2017 <- as.data.frame(fread("all Listing Data/2017_May_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+June_2017 <- as.data.frame(fread("all Listing Data/2017_June_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+July_2017 <- as.data.frame(fread("all Listing Data/2017_July_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+August_2017 <- as.data.frame(fread("all Listing Data/2017_August_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+September_2017 <- as.data.frame(fread("all Listing Data/2017_September_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+October_2017 <- as.data.frame(fread("all Listing Data/2017_October_listings.csv", select = c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+November_2017 <- as.data.frame(fread("all Listing Data/2017_November_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+December_2017 <- as.data.frame(fread("all Listing Data/2017_December_listings.csv", select =c("id","room_type","latitude","longitude","host_id","neighbourhood_cleansed","neighbourhood_group_cleansed","host_name","availability_365","calculated_host_listings_count","review_scores_rating")))
+>>>>>>> Stashed changes
 
 ```
 
@@ -92,9 +148,11 @@ cumulative_change <- rbind(counts_2016, counts_2017)
 cumulative_change
 ```
 
-```{r}
+```{r fig.width=6,fig.height=4}
+
+cumulative_change$year = as.factor(cumulative_change$year)
 ggplot(cumulative_change, aes(x=year, y=count, fill = room_type)) +
-  geom_bar(position="dodge", stat="identity")
+  geom_bar(position="dodge", stat="identity") +  scale_fill_brewer(palette = "Set2") + theme_minimal() + ggtitle("Impact of Policy Change on Overall Listings")
 ```
 
 ```{r}
@@ -178,12 +236,12 @@ relative_hosts = base::merge(agg_host_2016,agg_host_2017,by="host_id",all=TRUE)
 df_2016_unique$year = 2016
 df_2017_unique$year = 2017
 
-write.csv(df_2016_unique,"2016_multiple_listings.csv")
-write.csv(df_2017_unique,"2017_multiple_listings.csv")
+#write.csv(df_2016_unique,"2016_multiple_listings.csv")
+#write.csv(df_2017_unique,"2017_multiple_listings.csv")
 
 combined_multiple = rbind(df_2016_unique,df_2017_unique)
 combined_multiple$pk = paste(as.character(combined_multiple$host_id),combined_multiple$host_name,sep="-")
-write.csv(combined_multiple,"total_multiple.csv")
+#write.csv(combined_multiple,"total_multiple_new.csv")
 relative_hosts[is.na(relative_hosts)] = 0
 
 relative_hosts$entire_home_apt_diff = relative_hosts$entire_home_apt_17 - relative_hosts$entire_home_apt_16
@@ -204,6 +262,7 @@ relative_hosts$shared_room_diff = relative_hosts$shared_room_17 - relative_hosts
 
 
 ```{r}
+<<<<<<< Updated upstream
 January_2016 <- as.data.frame(fread("data/2016_January_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
 February_2016 <- as.data.frame(fread("data/2016_February_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
 March_2016 <- as.data.frame(fread("data/2016_March_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
@@ -229,6 +288,59 @@ September_2017 <- as.data.frame(fread("data/2017_September_listings.csv", select
 October_2017 <- as.data.frame(fread("data/2017_October_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
 November_2017 <- as.data.frame(fread("data/2017_November_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
 December_2017 <- as.data.frame(fread("data/2017_December_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+||||||| merged common ancestors
+January_2016 <- as.data.frame(fread("all Listing Data/2016_January_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+February_2016 <- as.data.frame(fread("all Listing Data/2016_February_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+March_2016 <- as.data.frame(fread("all Listing Data/2016_March_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+April_2016 <- as.data.frame(fread("all Listing Data/2016_April_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+May_2016 <- as.data.frame(fread("all Listing Data/2016_May_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+June_2016 <- as.data.frame(fread("all Listing Data/2016_June_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+July_2016 <- as.data.frame(fread("all Listing Data/2016_July_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+August_2016 <- as.data.frame(fread("all Listing Data/2016_August_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+September_2016 <- as.data.frame(fread("all Listing Data/2016_September_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+October_2016 <- as.data.frame(fread("all Listing Data/2016_October_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+November_2016 <- as.data.frame(fread("all Listing Data/2016_November_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+December_2016 <- as.data.frame(fread("all Listing Data/2016_December_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+
+January_2017 <- as.data.frame(fread("all Listing Data/2017_January_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+February_2017 <- as.data.frame(fread("all Listing Data/2017_February_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+March_2017 <- as.data.frame(fread("all Listing Data/2017_March_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+April_2017 <- as.data.frame(fread("all Listing Data/2017_April_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+May_2017 <- as.data.frame(fread("all Listing Data/2017_May_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+June_2017 <- as.data.frame(fread("all Listing Data/2017_June_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+July_2017 <- as.data.frame(fread("all Listing Data/2017_July_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+August_2017 <- as.data.frame(fread("all Listing Data/2017_August_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+September_2017 <- as.data.frame(fread("all Listing Data/2017_September_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+October_2017 <- as.data.frame(fread("all Listing Data/2017_October_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+November_2017 <- as.data.frame(fread("all Listing Data/2017_November_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+December_2017 <- as.data.frame(fread("all Listing Data/2017_December_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating")))
+=======
+January_2016 <- as.data.frame(fread("all Listing Data/2016_January_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+February_2016 <- as.data.frame(fread("all Listing Data/2016_February_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+March_2016 <- as.data.frame(fread("all Listing Data/2016_March_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+April_2016 <- as.data.frame(fread("all Listing Data/2016_April_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+May_2016 <- as.data.frame(fread("all Listing Data/2016_May_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+June_2016 <- as.data.frame(fread("all Listing Data/2016_June_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+July_2016 <- as.data.frame(fread("all Listing Data/2016_July_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+August_2016 <- as.data.frame(fread("all Listing Data/2016_August_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+September_2016 <- as.data.frame(fread("all Listing Data/2016_September_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+October_2016 <- as.data.frame(fread("all Listing Data/2016_October_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+November_2016 <- as.data.frame(fread("all Listing Data/2016_November_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+December_2016 <- as.data.frame(fread("all Listing Data/2016_December_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+
+January_2017 <- as.data.frame(fread("all Listing Data/2017_January_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+February_2017 <- as.data.frame(fread("all Listing Data/2017_February_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+March_2017 <- as.data.frame(fread("all Listing Data/2017_March_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+April_2017 <- as.data.frame(fread("all Listing Data/2017_April_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+May_2017 <- as.data.frame(fread("all Listing Data/2017_May_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+June_2017 <- as.data.frame(fread("all Listing Data/2017_June_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+July_2017 <- as.data.frame(fread("all Listing Data/2017_July_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+August_2017 <- as.data.frame(fread("all Listing Data/2017_August_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+September_2017 <- as.data.frame(fread("all Listing Data/2017_September_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+October_2017 <- as.data.frame(fread("all Listing Data/2017_October_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+November_2017 <- as.data.frame(fread("all Listing Data/2017_November_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+December_2017 <- as.data.frame(fread("all Listing Data/2017_December_listings.csv", select = c("id","room_type", "calculated_host_listings_count", "availability_30", "review_scores_rating","availability_365")))
+>>>>>>> Stashed changes
 
 
 df_2017 <- rbindlist(list(January_2017,February_2017,March_2017,April_2017,May_2017,June_2017,July_2017,August_2017,September_2017, October_2017,November_2017, December_2017))
@@ -238,12 +350,12 @@ df_2016 <- rbindlist(list(January_2016,February_2016,March_2016,April_2016,May_2
 ```
 
 ```{r}
-df_2016$is_commercial[df_2016$calculated_host_listings_count > 1  &  df_2016$availability_30/30 < 0.3 & df_2016$review_scores_rating>50] <- "Commercial Listing"
+df_2016$is_commercial[df_2016$calculated_host_listings_count > 1  &  df_2016$availability_365/365 < 0.3 & df_2016$review_scores_rating>50] <- "Commercial Listing"
 
 df_2016$is_commercial[is.na(df_2016$is_commercial)] <- "Household Listing"
 
 
-df_2017$is_commercial[df_2017$calculated_host_listings_count > 1  &  df_2017$availability_30/30 < 0.3 & df_2017$review_scores_rating>50] <- "Commercial Listing"
+df_2017$is_commercial[df_2017$calculated_host_listings_count > 1  &  df_2017$availability_365/365 < 0.3 & df_2017$review_scores_rating>50] <- "Commercial Listing"
 
 df_2017$is_commercial[is.na(df_2017$is_commercial)] <- "Household Listing"
 
@@ -327,5 +439,8 @@ cumulative_change
 ggplot(cumulative_change, aes(x=year, y=count, fill = room_type)) +
   geom_bar(position="dodge", stat="identity")
 
+```
+
+```{r}
 ```
 
