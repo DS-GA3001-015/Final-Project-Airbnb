@@ -10,10 +10,10 @@ output:
 
 ```{r fig.width=10,fig.height=10}
 library(knitr)
-opts_chunk$set(fig.path="images/",
+opts_chunk$set(fig.path="./tempdata/images/",
                cache.path="cache/",
                cache=FALSE,
-               echo=TRUE,
+               echo=FALSE,
                message=FALSE,
                warning=FALSE) 
 ```
@@ -31,12 +31,13 @@ library(geosphere)
 library(geojsonio)
 library(sp)
 library(htmltools)
-
+library(data.table)
 
 #Automate for entire dataset
 
 data_replace_mean<- function(data){
   for(i in 1:ncol(data)){
+  #if(nrow(data)>0)
   data[is.na(data[,i]), i] <- mean(data[,i], na.rm = TRUE)
   }
   return(data)
@@ -57,21 +58,17 @@ clean_data <- function(df){
   df_subset$is_commercial = NA
 
 
-for(i in 1:nrow(df_subset)){
-  if((df_subset[i,"calculated_host_listings_count"] > 1)  &  (df_subset[i,"availability_365"]/365 < 0.3) & (df_subset[i,"review_scores_rating"]>50)){
-    df_subset[i,"is_commercial"] = "Commercial Listing"  
-  }
-  else{
-    df_subset[i,"is_commercial"] = "Household Listing"
-  }
-}
-
+df_subset$is_commercial = ifelse(((df_subset$calculated_host_listings_count > 1)  &  (df_subset$availability_365 / 365 < 0.3) & 
+                                  (df_subset$review_scores_rating > 50)),"Commercial Listing","Household Listing")
 df_commercial = subset(df_subset,select = c("id","is_commercial"))
 return (df_commercial)
 }
 
-listings_file_1 <- read.csv("data/January_2016_listings.csv")
-listings_file_2 <- read.csv("data/February_2016_listings.csv")
+listings_file_1 <- fread("./all Listing Data/2018_March_listings.csv")
+listings_file_2 <- fread("./all Listing Data/2018_March_listings.csv")
+
+listings_file_1 = as.data.frame(listings_file_1)
+listings_file_2 = as.data.frame(listings_file_2)
 
 listing_1_commercial <- clean_data(listings_file_1)
 listing_2_commercial <- clean_data(listings_file_2)
@@ -108,6 +105,9 @@ total_listings_non_commercial <- filter(total_listings, is_commercial=="Househol
 ```
 
 ```{r}
+library(htmlwidgets)
+library(htmltools)
+
 review_columns <- c("review_scores_accuracy","review_scores_cleanliness","review_scores_checkin","review_scores_communication","review_scores_location","review_scores_value")
 total_listings_commercial$avg_review_value <- ((total_listings_commercial$review_scores_accuracy + total_listings_commercial$review_scores_cleanliness + total_listings_commercial$review_scores_checkin + total_listings_commercial$review_scores_communication + total_listings_commercial$review_scores_location + total_listings_commercial$review_scores_value)/6)
 total_listings_commercial$avg_review_value[is.na(total_listings_commercial$avg_review_value) ]<- 0
@@ -130,22 +130,42 @@ names(neighbourhood_scores) <- c("neighbourhood", "avg_score")
 neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
 neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
 
-airbnb_neighbourhoods <- geojsonio::geojson_read("data/neighbourhoods.geojson", what = "sp")
+airbnb_neighbourhoods <- geojsonio::geojson_read("./all Listing Data/neighbourhoods.geojson", what = "sp")
 pal <- colorNumeric("viridis", NULL)
 
 airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
 
+ rrsc <- tags$div(
+   HTML('<a href="https://cran.r-project.org/"> <img border="0" alt="Average score for Commercial Listings" src="/PathToImage/ImageR.jpeg" width="300" height="100"> </a>')
+ )
+
+rrrc <- tags$div(
+   HTML('<a href="https://cran.r-project.org/"> <img border="0" alt="Average review for Commercial Listings" src="/PathToImage/ImageR.jpeg" width="300" height="100"> </a>')
+ )
+
+rrcc <- tags$div(
+   HTML('<a href="https://cran.r-project.org/"> <img border="0" alt="Average cost for Commercial Listings" src="/PathToImage/ImageR.jpeg" width="300" height="100"> </a>')
+ )
+
 p_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+  setView(lng = -73.7856491, lat = 40.7022541, zoom = 9) %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
-  leaflet::addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_score), opacity = 1.0,title = "score")
 
 p_commercial_review <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+  setView(lng = -73.7856491, lat = 40.7022541, zoom = 9) %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_review)) %>%
-  leaflet::addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_review), opacity = 1.0,title = "review")
 
 p_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+  setView(lng = -73.7856491, lat = 40.7022541, zoom = 9) %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
-  leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0,title = "cost")
+
+
+#saveWidget(p_commercial_score, file="p_commercial_score.html")
+#saveWidget(p_commercial_review, file="p_commercial_review.html")
+#saveWidget(p_commercial_cost, file="p_commercial_cost.html")
 
 ```
 
@@ -173,27 +193,47 @@ names(neighbourhood_scores) <- c("neighbourhood", "avg_score")
 
 neighbourhood_merged <- merge(neighbourhood_scores, neighbourhood_reviews, by="neighbourhood")
 neighbourhood_merged <- merge(neighbourhood_merged, neighbourhood_costs, by="neighbourhood")
-airbnb_neighbourhoods <- geojsonio::geojson_read("data/neighbourhoods.geojson", what = "sp")
+airbnb_neighbourhoods <- geojsonio::geojson_read("./all Listing Data/neighbourhoods.geojson", what = "sp")
 pal <- colorNumeric("viridis", NULL)
 
 airbnb_neighbourhoods <- sp::merge(airbnb_neighbourhoods, neighbourhood_merged, by="neighbourhood")
 
+ rrsnc <- tags$div(
+   HTML('<a href="https://cran.r-project.org/"> <img border="0" alt="Average score for Non-Commercial Listings" src="/PathToImage/ImageR.jpeg" width="300" height="100"> </a>')
+ )
+
+rrrnc <- tags$div(
+   HTML('<a href="https://cran.r-project.org/"> <img border="0" alt="Average review for Non-Commercial Listings" src="/PathToImage/ImageR.jpeg" width="300" height="100"> </a>')
+ )
+
+rrcnc <- tags$div(
+   HTML('<a href="https://cran.r-project.org/"> <img border="0" alt="Average cost for Non-Commercial Listings" src="/PathToImage/ImageR.jpeg" width="300" height="100"> </a>')
+ )
+
 p_non_commercial_score <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+  setView(lng = -73.7856491, lat = 40.7022541, zoom = 9) %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_score)) %>%
-  leaflet::addLegend(pal = pal, values = ~(avg_score), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_score), opacity = 1.0,title = "score")
 
 p_non_commercial_review <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+  setView(lng = -73.7856491, lat = 40.7022541, zoom = 9) %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_review)) %>%
-  leaflet::addLegend(pal = pal, values = ~(avg_review), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_review), opacity = 1.0,title = "review")
 
 p_non_commercial_cost <- leaflet(airbnb_neighbourhoods)%>%addTiles() %>%
+  setView(lng = -73.7856491, lat = 40.7022541, zoom = 9) %>%
 addPolygons(stroke = FALSE, smoothFactor = 0.3, fillOpacity = 1 ,fillColor = ~pal(avg_cost)) %>%
-  leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0)
+  leaflet::addLegend(pal = pal, values = ~(avg_cost), opacity = 1.0,title = "cost")
+
+#saveWidget(p_non_commercial_score, file="p_non_commercial_score.html")
+#saveWidget(p_non_commercial_review, file="p_non_commercial_review.html")
+#saveWidget(p_non_commercial_cost, file="p_non_commercial_cost.html")
+
 
 ```
 
 
-```{r}
+```{r fig.width=8,fig.height=6}
 browsable(
   tagList(list(
     tags$div(
@@ -235,7 +275,7 @@ browsable(
 ```
 
 
-```{r fig.width=5,fig.height=5}
+```{r fig.width=6,fig.height=4}
 listings_gp = group_by(total_listings,is_commercial,neighbourhood_group_cleansed)
 listings_sm = summarise(listings_gp,count=n())
 colnames(listings_sm) = c("Listing_Type","Borough","Count")
@@ -270,5 +310,20 @@ for(i in 1:nrow(apt_ps)){
 
 ggplot(data=apt_ps, aes(x=Listing_Type, y=Percentage, fill=Property_Type)) +
 geom_bar(stat="identity", position=position_dodge()) + xlab("Listing_Type") + ylab("Percentage") + ggtitle("Distribution of Listings") + theme_minimal() + scale_fill_brewer(palette="Paired")
+```
+
+```{r fig.width=6,fig.height=4}
+
+tgp = group_by(total_listing_1,is_commercial)
+tsm = data.frame(summarise(tgp,count=n()))
+colnames(tsm) = c("Listing Status","count")
+
+tsm$Percentage = (tsm$count/sum(tsm$count))*100
+
+ggplot(data=tsm, aes(x=reorder(tsm$`Listing Status`,tsm$Percentage), y=Percentage)) +
+geom_bar(stat="identity", width = 0.3,fill='steelblue') + coord_flip()+ xlab("Listing Status") + ylab("Percentage") + ggtitle("Distribution of Listings") + theme_minimal() + scale_fill_brewer(palette="Paired")
+```
+
+```{r fig.width=6,fig.height=4}
 ```
 
