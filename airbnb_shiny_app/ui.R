@@ -8,7 +8,7 @@ total_multiple = total_multiple[order(-total_multiple$sum_total),]
 names = unique(total_multiple[1:2094,"pk"])
 
 shinyUI(fluidPage(
-  tags$head(includeCSS("styles.css")),
+  #tags$head(includeCSS("styles.css")),
   # Our fullscreen part of the UI for the map
   # And the tabbed part with the inputs and plot
   fixedPanel(id = "fullscreen",
