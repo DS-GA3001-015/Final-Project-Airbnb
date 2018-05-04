@@ -21,10 +21,23 @@ opts_chunk$set(fig.path="images/",
 ```
 
 # Introduction  
+While we need a place for a few days' stay during our travel to a different city, airbnb is primarily one of the options that comes to our mind. Due to the popularity many listings have mushroomed all over the city thoroughout different states. Many-a-times hosts operate their listing with the sole objective of maximizing their profit with disregard to local city laws. This phenomenon can have far reaching effects on the city at large.
+
+With the above problem at hand, our project has tried to access the impact AirBnb has on rentals and tourism. We have approached the project mainly on four fronts:  
+  
   - Segregate AirBnb listings into commercial and household rentals.
   - Comparitive analysis between commercial and household rentals.
   - Impact of AirBnb growth on rentals in NYC.
   - Proximity of AirBnb rentals to tourist places.  
+  
+## Dataset
+Our sources of data are the below:
+  - [Inside AirBnb](http://insideairbnb.com/get-the-data.html)
+  - [Street Easy](https://streeteasy.com/blog/download-data/)
+  - [Tourism Dataset]()
+  
+
+
 
 ## Identify commercial vs household airbnb listings.  
 
