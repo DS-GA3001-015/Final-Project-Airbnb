@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r}
@@ -20,12 +20,11 @@ library(geosphere)
 library(geojsonio)
 library(sp)
 library(htmltools)
+library(data.table)
 ```
 
 ```{r}
-combined_airbnb_rental_price
-
-
+combined_airbnb_rental_price <- as.data.frame(fread('combined_airbnb_rental_price.csv'))
 ```
 
 ```{r}
