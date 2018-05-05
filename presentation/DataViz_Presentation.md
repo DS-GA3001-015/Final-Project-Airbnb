@@ -34,12 +34,12 @@ Our sources of data are the below:
 ## Identify commercial vs household airbnb listings.  
 In order to more familiarize ourselves, firstly we seggregated all airbnb listings in to commercial and household ones. The methodology was to obtain the unique listing_ids across a year. From the obtained list based on based on availability, score, review, count of multiple listings the listings were classified into commercial and household categories.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/listing-count-split.png)
+![''](../images/listing-count-split.png)
 We saw that majority of the listings were household listings.
 
 ## Distribution of commercial and household listings across NY.  
 Brooklyn had maximum commercial listings whereas Manhattan topped the count of household ones.
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/distribution-listing.png)
+![''](../images/distribution-listing.png)
 
 ## Distribution of commercial and household listings by room type.  
 Every listing was divided into either of the three categories 
@@ -48,7 +48,7 @@ Every listing was divided into either of the three categories
  - Shared Room
 Getting an overview of this distribution was a critical step in the subsequent analysis of rental policy change.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/percentage-listing.jpg)
+![''](../images/percentage-listing.jpg)
   
   
 Most commercial listings were private rooms whereas household listings were entire home/apt. This gave an idea as to how the property types were distributed.
@@ -60,43 +60,43 @@ For ascertaining the parameter user scores, the parameters cleanliness, location
 
 To get a neighbouhood by neighbourhood comparison, these visualisations were made interactively available on shiny.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/score-comparison.jpg)
+![''](../images/score-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt user reviews.  
 User review scores were averaged across all listings for a particular neighbourhood. This can signify user acceptance rate of listings across a neighbourhood. 
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/review-comparison.jpg)
+![''](../images/review-comparison.jpg)
 
 ## Comparitive analysis between commercial and household listings wrt price.  
   Listing price was averaged across all listings for a particular neighbourhood.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost-comparison.jpg)
+![''](../images/cost-comparison.jpg)
 
 ## Rental Policy Change
   On October 21 2016, New York State Governor Cuomo signed into law a new bill, the "Anti-Airbnb Advertising Law", which effectively makes it illegal to rent out most apartments in NYC on short-term-rental platforms like Airbnb, if the "host" is not present, and the stay would be for less than 30 days.
   To gauge the impact of this law and access ground reality, we decided compare listings before and after the law was enacted. 
   We observed that number of entire homes/apt decreased by 3.6% and private rooms increased on 9.2% from 2016 to 2017. 
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects1.png)
+![''](../images/policy-effects1.png)
 
 
 ## Effects on commercial listings
   
 Number of entire homes/apt decreased by 7.8% and private rooms increased on 16%.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-commercial.png)
+![''](../images/policy-effects-commercial.png)
 
 ## Effects on non-commercial listings
   
 Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.  
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/policy-effects-household.png)
+![''](../images/policy-effects-household.png)
 
 ## Impact of Policy Change on distribution of room types  
   - From the above plots it appears that, hosts have converted their single apartments to multiple private rooms to bypass the regulation.
   - Due to laxity in enforcing the rules by AirBnb there is only a reduction of 3.66% in the number of the number of entire homes.
   
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/time-series.png)
+![''](../images/time-series.png)
     
   - There is a dip fom october 2016 to jan 2017 probably due to the policy change.
   - Prior to the policy change there is a signifanct difference between teh number of private rooms and entire homes. Currently the count of private rooms are catching up with the entire home/apt, showing the probable conversion of entire homes to multiple private rooms.
@@ -105,13 +105,13 @@ Number of entire homes/apt decreased by 4% and private rooms increased on 7.7%.
 ## Pointout users having multiple listings  
 Shiny app to identify potential violators.
 [Shiny App](https://itslimelight.shinyapps.io/impact--airbnb/)
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/pin-point-users.jpg)
+![''](../images/pin-point-users.jpg)
 
   
 ## Tourist places having maximum number of nearest Airbnb listings  
 Airbnb serves as an affordable housing resource for tourists, so we decided to analyze the proximity of Airbnbs to tourist places in NYC. For this we Combined two data sets, one of the Airbnb and another of tourist places. Continuing with the theme of exploring commercial and noncommercial Airbnbs, we segregated them to see, if any of the other might be more strategically located to the tourist locations.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/Tourist place with max airbnb.png)
+![''](../images/Tourist place with max airbnb.png)
   
 The plot above visualizes tourist places having maximum number of nearest Airbnb listings
 From the plot we  see that noncommercial listings are way ahead when it comes to being strategically located around tourist places.
@@ -121,40 +121,40 @@ From the plot we  see that noncommercial listings are way ahead when it comes to
 We decided to analyze the average listing prices for the nearest Airbnbs across some tourist places to see the price variations depending on the upscale location of the tourist places.
 For example Rockefeller center and one world observatory are amongst the costliest tourist places to rent Airbnbs in.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/cost variation.png)
+![''](../images/cost variation.png)
   
 The Airbnb listings have been segregated into entire apartment/private/shared and as expected renting a private space turns out to be much more expensive than a shared space.
 
 
 ## Average listing prices for the nearest commercial Airbnbs
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/Airbnb Commercial cost variation.png)
+![''](../images/Airbnb Commercial cost variation.png)
 
 ## Average listing prices for the nearest non commercial Airbnbs
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/Airbnb non commercial listing.png)
+![''](../images/Airbnb non commercial listing.png)
 ## Relative proximity of Airbnb listings to tourist places
 In this plot we tried to explore the relative proximity of commercial and noncommercial Airbnb listings to tourist places.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/Nearest airbnb.png)
+![''](../images/Nearest airbnb.png)
   
 From the plot we can see a consistent pattern that noncommercial listings are closer when compared to commercial listings.
 
 ## How have AirBnb's growth affected rental prices?  
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/airbnb-vs-rentals.png)
+![''](../images/airbnb-vs-rentals.png)
 
 ## Time series analysis of rental and Airbnb rent prices
 
 We analyzed Airbnb listings and apartment rental listings , to specifically study the trend in their respective listing prices over time and if at all they had an effect on one another.
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/Time series price.png)
+![''](../images/Time series price.png)
   
 We see that the boro of Manhattan has both very high rental and Airbnb list prices
 In all the boros we see that the prices for Airbnbs are cheaper when compared to rental listings, which explains the popularity of Airbnbs.
 
 ## Time series analysis of rental and Airbnb Occupancy rate
 
-![''](/Users/shivendra/Projects/Final-Project-Airbnb/images/Time series Occupancy.png)
+![''](../images/Time series Occupancy.png)
   
 Despite Airbnb being cheaper, occupancy rates of rental listing is higher than the Airbnb listing.
 
