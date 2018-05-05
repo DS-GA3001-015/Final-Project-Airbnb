@@ -10,15 +10,7 @@ output:
 ---
 
 
-```{r setup, include=FALSE}
-library(knitr)
-opts_chunk$set(fig.path="images/",
-               cache.path="cache/",
-               cache=FALSE,
-               echo=FALSE,
-               message=FALSE,
-               warning=FALSE) 
-```
+
 
 # Introduction  
 While we need a place for a few days' stay during our travel to a different city, airbnb is primarily one of the options that comes to our mind. Due to the popularity many listings have mushroomed all over the city thoroughout different states. Many-a-times hosts operate their listing with the sole objective of maximizing their profit with disregard to local city laws. This phenomenon can have far reaching effects on the city at large.
