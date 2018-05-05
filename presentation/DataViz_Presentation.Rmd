@@ -119,7 +119,7 @@ Shiny app to identify potential violators.
 ## Tourist places having maximum number of nearest Airbnb listings  
 Airbnb serves as an affordable housing resource for tourists, so we decided to analyze the proximity of Airbnbs to tourist places in NYC. For this we Combined two data sets, one of the Airbnb and another of tourist places. Continuing with the theme of exploring commercial and noncommercial Airbnbs, we segregated them to see, if any of the other might be more strategically located to the tourist locations.
 
-![''](../images/Tourist place with max airbnb.png)
+![''](../images/Tourist-place-with-max-airbnb.png)
   
 The plot above visualizes tourist places having maximum number of nearest Airbnb listings
 From the plot we  see that noncommercial listings are way ahead when it comes to being strategically located around tourist places.
@@ -129,22 +129,22 @@ From the plot we  see that noncommercial listings are way ahead when it comes to
 We decided to analyze the average listing prices for the nearest Airbnbs across some tourist places to see the price variations depending on the upscale location of the tourist places.
 For example Rockefeller center and one world observatory are amongst the costliest tourist places to rent Airbnbs in.
 
-![''](../images/cost variation.png)
+![''](../images/cost-variation.png)
   
 The Airbnb listings have been segregated into entire apartment/private/shared and as expected renting a private space turns out to be much more expensive than a shared space.
 
 
 ## Average listing prices for the nearest commercial Airbnbs
 
-![''](../images/Airbnb Commercial cost variation.png)
+![''](../images/Airbnb-Commercial-cost-variation.png)
 
 ## Average listing prices for the nearest non commercial Airbnbs
 
-![''](../images/Airbnb non commercial listing.png)
+![''](../images/Airbnb-non-commercial-listing.png)
 ## Relative proximity of Airbnb listings to tourist places
 In this plot we tried to explore the relative proximity of commercial and noncommercial Airbnb listings to tourist places.
 
-![''](../images/Nearest airbnb.png)
+![''](../images/Nearest-airbnb.png)
   
 From the plot we can see a consistent pattern that noncommercial listings are closer when compared to commercial listings.
 
@@ -155,14 +155,14 @@ From the plot we can see a consistent pattern that noncommercial listings are cl
 
 We analyzed Airbnb listings and apartment rental listings , to specifically study the trend in their respective listing prices over time and if at all they had an effect on one another.
 
-![''](../images/Time series price.png)
+![''](../images/Time-series-price.png)
   
 We see that the boro of Manhattan has both very high rental and Airbnb list prices
 In all the boros we see that the prices for Airbnbs are cheaper when compared to rental listings, which explains the popularity of Airbnbs.
 
 ## Time series analysis of rental and Airbnb Occupancy rate
 
-![''](../images/Time series Occupancy.png)
+![''](../images/Time-series-Occupancy.png)
   
 Despite Airbnb being cheaper, occupancy rates of rental listing is higher than the Airbnb listing.
 
